@@ -31,6 +31,20 @@
         .cadeado-fechado { color: #ff4d4d; }
         .cadeado-aberto { color: #4CAF50; text-shadow: 0 0 15px #4CAF50 !important; }
 
+        /* --- ESTILO DO RELÓGIO REGRESSIVO --- */
+        #contador-container {
+            background-color: #0d0d0d;
+            padding: 15px;
+            border: 2px solid #ff4d4d;
+            border-radius: 5px;
+            margin: 20px 0;
+            box-shadow: 0 0 15px rgba(255, 77, 77, 0.3);
+        }
+        #titulo-timer { color: #ff4d4d; font-size: 14px; margin-bottom: 5px; font-weight: bold; text-transform: uppercase; }
+        #timer-regressivo { font-family: 'Courier New', Courier, monospace; font-size: 38px; color: #fff; letter-spacing: 3px; font-weight: bold; }
+        #legenda-timer { color: #888; font-size: 12px; margin-top: 5px; letter-spacing: 1px;}
+        .tempo-liberado { border-color: #4CAF50 !important; box-shadow: 0 0 15px rgba(76, 175, 80, 0.3) !important; }
+
         .bussola-container {
             margin: 15px auto;
             width: 120px;
@@ -73,39 +87,12 @@
         .btn-radar { background-color: #cc0000; color: #fff; }
         .btn-radar.ligado { background-color: #4CAF50; }
 
-        .area-secreta {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-top: 30px;
-            opacity: 0.4; 
-            transition: opacity 0.3s;
-        }
+        .area-secreta { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 30px; opacity: 0.4; transition: opacity 0.3s; }
         .area-secreta:hover { opacity: 1; }
-        .area-secreta input[type="text"] {
-            width: 120px;
-            padding: 8px;
-            margin: 0;
-            font-size: 14px;
-            border: 1px solid #555;
-            border-radius: 5px;
-            background-color: #111;
-            color: #fff;
-            text-align: center;
-        }
-        .area-secreta button {
-            width: auto;
-            margin: 0;
-            padding: 8px 15px;
-            font-size: 14px;
-            background-color: #444;
-            color: #fff;
-            border: 1px solid #777;
-        }
+        .area-secreta input[type="text"] { width: 120px; padding: 8px; margin: 0; font-size: 14px; border: 1px solid #555; border-radius: 5px; background-color: #111; color: #fff; text-align: center; }
+        .area-secreta button { width: auto; margin: 0; padding: 8px 15px; font-size: 14px; background-color: #444; color: #fff; border: 1px solid #777; }
 
         #debug-panel { display: none; background: #000; color: #0f0; border: 1px solid #0f0; padding: 10px; font-size: 12px; text-align: left; margin-top: 20px; font-family: monospace;}
-        
         select.dropdown-teste { width: 100%; padding: 10px; margin-bottom: 20px; background: #111; color: #fff; border: 1px solid #d4af37; border-radius: 5px; font-size: 16px;}
     </style>
 </head>
@@ -121,8 +108,6 @@
 
     <div id="screen-test" class="screen">
         <h2>🛠️ TESTE DE CALIBRAGEM</h2>
-        <p>Selecione o alvo para verificar a precisão do magnetômetro.</p>
-
         <select id="alvo-teste" class="dropdown-teste" onchange="mudarAlvoTeste()">
             <option value="99">Parque São Caetano (Teste Local)</option>
             <option value="1">Largo dos Padeiros (Início)</option>
@@ -132,27 +117,29 @@
             <option value="5">Cachoeira / Casa Zen</option>
             <option value="0">Estacionamento</option>
         </select>
-
         <button class="btn-radar" onclick="iniciarBussola()">Ligar Radar Bússola</button>
-        
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
         <div class="contador-distancia">Distância do Alvo Selecionado:<br><span class="metros-valor">--</span> metros</div>
-
         <div class="area-secreta">
             <input type="text" id="senha-teste" placeholder="Código">
             <button onclick="forcarAvanco('teste', 0)">Ação</button>
         </div>
-
         <button class="btn-secundario" style="margin-top:20px; width:100%; padding: 15px;" onclick="sairTelaTeste()">Voltar ao Jogo</button>
     </div>
 
     <div id="screen0" class="screen">
         <h2>SISTEMA DETETIVE ATIVADO</h2>
-        <div id="icone-cadeado" class="cadeado-fechado">🔒</div>
-        <p id="status-gps" style="text-align: center; font-weight: bold; color: #ff4d4d;">Sinal Fora da Área Alvo</p>
+        
+        <div id="contador-container">
+            <div id="titulo-timer">Protocolo de Tempo Bloqueado</div>
+            <div id="timer-regressivo">--:--:--</div>
+            <div id="legenda-timer">HORAS &nbsp;:&nbsp; MINUTOS &nbsp;:&nbsp; SEGUNDOS</div>
+        </div>
 
-        <p>Aguardando chegada às coordenadas da neblina...</p>
-        <p><small>O caso só será desbloqueado quando o satélite confirmar sua presença no estacionamento da vila.</small></p>
+        <div id="icone-cadeado" class="cadeado-fechado">🔒</div>
+        <p id="status-gps" style="text-align: center; font-weight: bold; color: #ff4d4d;">Aguardando Liberação Temporal...</p>
+
+        <p><small>O caso só será desbloqueado quando o satélite confirmar sua presença no estacionamento da vila após o tempo estipulado.</small></p>
         
         <button id="btn-iniciar" class="btn-principal" onclick="mudarTela(0, 1)" disabled>Iniciar Investigação</button>
 
@@ -169,15 +156,11 @@
             <b>📍 Seu Primeiro Objetivo:</b><br>
             A perícia isolou o local onde a vítima foi vista pela última vez. Siga para o <b>Largo dos Padeiros</b>.
         </div>
-
         <button class="btn-gps" onclick="validarChegadaGPS(1, 2)">Confirmar Coordenadas da Missão</button>
         <button class="btn-radar" onclick="iniciarBussola()">Ligar Radar Bússola</button>
-        
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
         <div class="contador-distancia">Distância Restante:<br><span class="metros-valor">--</span> metros</div>
-
         <button class="btn-gmaps" onclick="abrirGoogleMaps()">Ver Rota no Google Maps</button>
-        
         <div class="area-secreta">
             <input type="text" id="senha1" placeholder="Código">
             <button onclick="forcarAvanco(1, 2)">Manual</button>
@@ -195,15 +178,11 @@
             <b>📍 Próximo Passo:</b><br>
             Alguém viu o roubo lá do alto. Procure o <b>Mirante para a Torre do Relógio</b>.
         </div>
-
         <button class="btn-gps" onclick="validarChegadaGPS(2, 3)">Confirmar Coordenadas da Missão</button>
         <button class="btn-radar" onclick="iniciarBussola()">Ligar Radar Bússola</button>
-        
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
         <div class="contador-distancia">Distância Restante:<br><span class="metros-valor">--</span> metros</div>
-        
         <button class="btn-gmaps" onclick="abrirGoogleMaps()">Ver Rota no Google Maps</button>
-        
         <div class="area-secreta">
             <input type="text" id="senha2" placeholder="Código">
             <button onclick="forcarAvanco(2, 3)">Manual</button>
@@ -222,15 +201,11 @@
             <b>📍 Próximo Passo:</b><br>
             Desça a rua, passe pela igreja e use o radar para encontrar o <b>Cemitério de Paranapiacaba</b>.
         </div>
-
         <button class="btn-gps" onclick="validarChegadaGPS(3, 4)">Confirmar Coordenadas da Missão</button>
         <button class="btn-radar" onclick="iniciarBussola()">Ligar Radar Bússola</button>
-
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
         <div class="contador-distancia">Distância Restante:<br><span class="metros-valor">--</span> metros</div>
-
         <button class="btn-gmaps" onclick="abrirGoogleMaps()">Ver Rota no Google Maps</button>
-        
         <div class="area-secreta">
             <input type="text" id="senha3" placeholder="Código">
             <button onclick="forcarAvanco(3, 4)">Manual</button>
@@ -248,15 +223,11 @@
             <b>📍 Próximo Passo:</b><br>
             O Fantasma diz que o antigo dono sabe de tudo. Suba a colina até o <b>Museu Castelinho</b>.
         </div>
-
         <button class="btn-gps" onclick="validarChegadaGPS(4, 5)">Confirmar Coordenadas da Missão</button>
         <button class="btn-radar" onclick="iniciarBussola()">Ligar Radar Bússola</button>
-
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
         <div class="contador-distancia">Distância Restante:<br><span class="metros-valor">--</span> metros</div>
-
         <button class="btn-gmaps" onclick="abrirGoogleMaps()">Ver Rota no Google Maps</button>
-        
         <div class="area-secreta">
             <input type="text" id="senha4" placeholder="Código">
             <button onclick="forcarAvanco(4, 5)">Manual</button>
@@ -275,15 +246,11 @@
             <b>📍 Passo Final:</b><br>
             O Ladrão está encurralado. Vá imediatamente para a <b>Casa Zen / Cachoeira</b>!
         </div>
-
         <button class="btn-gps" onclick="validarChegadaGPS(5, 6)">Confirmar Coordenadas da Missão</button>
         <button class="btn-radar" onclick="iniciarBussola()">Ligar Radar Bússola</button>
-
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
         <div class="contador-distancia">Distância Restante:<br><span class="metros-valor">--</span> metros</div>
-
         <button class="btn-gmaps" onclick="abrirGoogleMaps()">Ver Rota no Google Maps</button>
-        
         <div class="area-secreta">
             <input type="text" id="senha5" placeholder="Código">
             <button onclick="forcarAvanco(5, 6)">Manual</button>
@@ -298,23 +265,71 @@
     </div>
 
     <script>
-        const TARGET_ESTACIONAMENTO = { lat: -23.779180, lng: -46.305736, raio: 80 }; 
+        // ==========================================
+        // 1. DATA ALVO E COORDENADAS
+        // ==========================================
         
+        // Define a data: Ano 2026, Mês 07 (Julho é "07" no padrão ISO), Dia 13, 00:00:00
+        const DATA_ALVO = new Date('2026-07-13T00:00:00').getTime();
+        let tempoLiberado = false;
+
+        const TARGET_ESTACIONAMENTO = { lat: -23.779180, lng: -46.305736, raio: 80 }; 
         const LOCAIS = {
-            99: { lat: -23.632528, lng: -46.572000, raio: 50 }, // Parque São Caetano
-            1: { lat: -23.778778, lng: -46.302278, raio: 50 }, // Largo
-            2: { lat: -23.777083, lng: -46.304194, raio: 50 }, // Mirante
-            3: { lat: -23.778500, lng: -46.304833, raio: 50 }, // Cemitério
-            4: { lat: -23.778194, lng: -46.300750, raio: 50 }, // Castelinho
-            5: { lat: -23.780306, lng: -46.301778, raio: 65 }, // Cachoeira
+            99: { lat: -23.632528, lng: -46.572000, raio: 50 }, 
+            1: { lat: -23.778778, lng: -46.302278, raio: 50 }, 
+            2: { lat: -23.777083, lng: -46.304194, raio: 50 }, 
+            3: { lat: -23.778500, lng: -46.304833, raio: 50 }, 
+            4: { lat: -23.778194, lng: -46.300750, raio: 50 }, 
+            5: { lat: -23.780306, lng: -46.301778, raio: 65 }, 
             0: TARGET_ESTACIONAMENTO
         };
 
-        let latAtual = 0;
-        let lngAtual = 0;
+        let latAtual = 0, lngAtual = 0;
         let watchId = null;
         let targetBussola = LOCAIS[1]; 
 
+        // ==========================================
+        // 2. LÓGICA DO RELÓGIO REGRESSIVO (TIMER)
+        // ==========================================
+        setInterval(atualizarTimer, 1000);
+
+        function atualizarTimer() {
+            let agora = new Date().getTime();
+            let distanciaTempo = DATA_ALVO - agora;
+
+            if (distanciaTempo > 0) {
+                // Transforma a distância total inteiramente em Horas, Minutos e Segundos
+                let horas = Math.floor(distanciaTempo / (1000 * 60 * 60));
+                let minutos = Math.floor((distanciaTempo % (1000 * 60 * 60)) / (1000 * 60));
+                let segundos = Math.floor((distanciaTempo % (1000 * 60)) / 1000);
+
+                // Formata para ter sempre zero à esquerda (ex: 09, 05)
+                horas = String(horas).padStart(2, '0');
+                minutos = String(minutos).padStart(2, '0');
+                segundos = String(segundos).padStart(2, '0');
+
+                document.getElementById("timer-regressivo").innerText = `${horas}:${minutos}:${segundos}`;
+                tempoLiberado = false;
+            } else {
+                // Quando o tempo chega ao dia 13/07
+                if(!tempoLiberado) {
+                    tempoLiberado = true;
+                    document.getElementById("timer-regressivo").innerText = "00:00:00";
+                    document.getElementById("titulo-timer").innerText = "Protocolo de Tempo Concluído";
+                    document.getElementById("titulo-timer").style.color = "#4CAF50";
+                    document.getElementById("contador-container").classList.add("tempo-liberado");
+                    
+                    document.getElementById('status-gps').innerText = "Sinal Fora da Área Alvo";
+                    
+                    // Força o sistema a checar o GPS de novo já que o tempo abriu
+                    verificarCadeadoEstacionamento();
+                }
+            }
+        }
+
+        // ==========================================
+        // 3. RASTREIO E CADEADO GEOGRÁFICO
+        // ==========================================
         window.onload = function() {
             if (navigator.geolocation) {
                 watchId = navigator.geolocation.watchPosition(atualizarPosicao, erroGps, {
@@ -323,6 +338,7 @@
             } else {
                 document.getElementById('status-gps').innerText = "GPS não suportado.";
             }
+            atualizarTimer(); // Já dá a primeira calculada no tempo
         };
 
         function atualizarPosicao(pos) {
@@ -333,8 +349,22 @@
             document.getElementById('dbg-lng').innerText = lngAtual.toFixed(6);
             document.getElementById('dbg-acc').innerText = Math.round(pos.coords.accuracy);
 
+            verificarCadeadoEstacionamento();
+
+            if(targetBussola && latAtual !== 0) {
+                let distanciaAtual = Math.round(calcularDistancia(latAtual, lngAtual, targetBussola.lat, targetBussola.lng));
+                document.getElementById('dbg-dist').innerText = distanciaAtual;
+                document.querySelectorAll('.metros-valor').forEach(el => { el.innerText = distanciaAtual; });
+            }
+        }
+
+        function verificarCadeadoEstacionamento() {
             if (document.getElementById('screen0').style.display !== "none") {
+                // O cadeado SÓ avalia o GPS se o tempo já tiver zerado
+                if(!tempoLiberado) return; 
+
                 let distEst = calcularDistancia(latAtual, lngAtual, TARGET_ESTACIONAMENTO.lat, TARGET_ESTACIONAMENTO.lng);
+                
                 if (distEst <= TARGET_ESTACIONAMENTO.raio) {
                     document.getElementById('icone-cadeado').innerText = "🔓";
                     document.getElementById('icone-cadeado').className = "cadeado-aberto";
@@ -342,15 +372,9 @@
                     status.innerText = "Sinal Confirmado! Acesso Liberado.";
                     status.style.color = "#4CAF50";
                     document.getElementById('btn-iniciar').disabled = false;
+                } else {
+                    document.getElementById('status-gps').innerText = "Sinal Fora da Área Alvo";
                 }
-            }
-
-            if(targetBussola && latAtual !== 0) {
-                let distanciaAtual = Math.round(calcularDistancia(latAtual, lngAtual, targetBussola.lat, targetBussola.lng));
-                document.getElementById('dbg-dist').innerText = distanciaAtual;
-                
-                let elementosMetros = document.querySelectorAll('.metros-valor');
-                elementosMetros.forEach(el => { el.innerText = distanciaAtual; });
             }
         }
 
@@ -373,6 +397,9 @@
             }
         }
 
+        // ==========================================
+        // 4. BÚSSOLA ABSOLUTA
+        // ==========================================
         let bussolaAtiva = false;
         let rotacaoCSS = 0; 
         
@@ -405,6 +432,9 @@
             });
         }
 
+        // ==========================================
+        // 5. TRANSIÇÕES E FUNÇÕES DO MENU SECRETO
+        // ==========================================
         function mudarTela(faseAtual, proximaFase) {
             document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
             document.getElementById("screen" + proximaFase).style.display = "block";
@@ -431,62 +461,9 @@
 
         function forcarAvanco(faseAtual, proximaFase) {
             let idCampoSenha = "senha" + faseAtual;
-            
-            // Tratamento especial para o input da tela de testes que não tem número
-            if(faseAtual === 'teste') {
-                idCampoSenha = "senha-teste";
-            }
+            if(faseAtual === 'teste') idCampoSenha = "senha-teste";
 
             let inputElement = document.getElementById(idCampoSenha);
             if(!inputElement) return;
 
-            let senhaDigitada = inputElement.value.trim().toLowerCase();
-            
-            if(senhaDigitada === "debug") {
-                let pnl = document.getElementById('debug-panel');
-                pnl.style.display = pnl.style.display === "block" ? "none" : "block";
-                inputElement.value = "";
-                return;
-            }
-
-            if(senhaDigitada === "debug2") {
-                document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
-                document.getElementById('screen-test').style.display = 'block';
-                inputElement.value = "";
-                
-                // Força o alvo da lista atual
-                mudarAlvoTeste();
-                window.scrollTo(0, 0);
-                return;
-            }
-
-            if (senhaDigitada === "teste") {
-                if (faseAtual === 'teste') { alert("Use o botão 'Voltar ao Jogo' abaixo."); return; }
-                mudarTela(faseAtual, proximaFase);
-            } else {
-                alert("Código inválido.");
-            }
-        }
-
-        function calcularDistancia(lat1, lon1, lat2, lon2) {
-            const R = 6371e3; 
-            const p1 = lat1 * Math.PI/180;
-            const p2 = lat2 * Math.PI/180;
-            const dp = (lat2-lat1) * Math.PI/180;
-            const dl = (lon2-lon1) * Math.PI/180;
-            const a = Math.sin(dp/2) * Math.sin(dp/2) + Math.cos(p1) * Math.cos(p2) * Math.sin(dl/2) * Math.sin(dl/2);
-            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        }
-
-        function calcularBearing(lat1, lon1, lat2, lon2) {
-            const l1 = lat1 * Math.PI/180;
-            const l2 = lat2 * Math.PI/180;
-            const dl = (lon2-lon1) * Math.PI/180;
-            const y = Math.sin(dl) * Math.cos(l2);
-            const x = Math.cos(l1) * Math.sin(l2) - Math.sin(l1) * Math.cos(l2) * Math.cos(dl);
-            let brng = Math.atan2(y, x);
-            return ((brng * 180 / Math.PI) + 360) % 360;
-        }
-    </script>
-</body>
-</html>
+            let senhaDigitada = inputElement.value.trim().
