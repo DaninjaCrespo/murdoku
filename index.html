@@ -37,7 +37,7 @@
         .cadeado-fechado { color: #ff4d4d; }
         .cadeado-aberto { color: #4CAF50; text-shadow: 0 0 15px #4CAF50 !important; }
 
-        /* --- ESTILOS DA BÚSSOLA --- */
+        /* --- ESTILOS DA BÚSSOLA E CONTADOR --- */
         .bussola-container {
             margin: 20px auto;
             width: 120px;
@@ -53,51 +53,31 @@
         }
         .seta-bussola {
             font-size: 50px;
-            transition: transform 0.2s ease-out;
+            /* Transição suave sem bugar nos 360 graus */
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
             transform: rotate(0deg); 
         }
-
-        .pista-box {
-            background-color: #333;
-            padding: 15px;
-            border-left: 4px solid #d4af37;
-            margin: 20px 0;
-            text-align: left;
-        }
-        .objetivo-box {
-            background-color: #1f1f1f;
-            padding: 15px;
-            border: 1px dashed #d4af37;
-            margin: 20px 0;
-            color: #fff;
-        }
-        input[type="text"] {
-            width: 80%;
-            padding: 10px;
-            margin: 15px 0;
-            font-size: 16px;
-            border: 1px solid #555;
-            border-radius: 5px;
+        .contador-distancia {
+            font-size: 18px;
+            color: #4CAF50;
             background-color: #111;
-            color: #fff;
-            text-align: center;
-        }
-        button {
-            background-color: #d4af37;
-            color: #1a1a1a;
-            border: none;
-            padding: 12px 25px;
-            font-size: 16px;
-            font-weight: bold;
+            padding: 10px;
             border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-            width: 100%;
-            margin-top: 10px;
+            border: 1px solid #4CAF50;
+            margin-bottom: 20px;
+            display: inline-block;
         }
+        .metros-valor {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .pista-box { background-color: #333; padding: 15px; border-left: 4px solid #d4af37; margin: 20px 0; text-align: left; }
+        .objetivo-box { background-color: #1f1f1f; padding: 15px; border: 1px dashed #d4af37; margin: 20px 0; color: #fff; }
+        input[type="text"] { width: 80%; padding: 10px; margin: 15px 0; font-size: 16px; border: 1px solid #555; border-radius: 5px; background-color: #111; color: #fff; text-align: center; }
+        button { background-color: #d4af37; color: #1a1a1a; border: none; padding: 12px 25px; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
         button:hover { background-color: #b5952f; }
         button:disabled { background-color: #555; color: #888; cursor: not-allowed; }
-        
         .btn-gps { background-color: #4CAF50; color: #fff; }
         .btn-gps:hover { background-color: #45a049; }
         .btn-secundario { background-color: #444; color: #fff; border: 1px solid #777; width: 80%; font-size: 14px;}
@@ -106,7 +86,6 @@
 </head>
 <body>
 
-    <!-- TELA 0: BLOQUEIO NO ESTACIONAMENTO -->
     <div id="screen0" class="screen">
         <h2>SISTEMA DETETIVE ATIVADO</h2>
         <div id="icone-cadeado" class="cadeado-fechado">🔒</div>
@@ -123,7 +102,6 @@
         <button class="btn-secundario" onclick="forcarAvanco(0, 1)">Forçar Desbloqueio</button>
     </div>
 
-    <!-- TELA 1: LARGO DOS PADEIROS -->
     <div id="screen1" class="screen">
         <h2>🕵️‍♀️ O Caso Foi Aberto</h2>
         <p>Bem-vinda, Detetive. Um crime terrível ocorreu em Paranapiacaba: meu coração foi roubado!</p>
@@ -134,6 +112,8 @@
 
         <button class="btn-secundario" style="width:100%; margin-bottom:15px;" onclick="iniciarBussola()">Ligar Radar (Bússola)</button>
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
+        
+        <div class="contador-distancia">Distância Restante:<br><span class="metros-valor">--</span> metros</div>
 
         <button class="btn-gps" onclick="validarChegadaGPS(1, 2)">Validar Chegada pelo GPS</button>
         
@@ -143,7 +123,6 @@
         <button class="btn-secundario" onclick="forcarAvanco(1, 2)">Avançar (Manual)</button>
     </div>
 
-    <!-- TELA 2: MIRANTE DO RELÓGIO -->
     <div id="screen2" class="screen">
         <h2>📍 Largo dos Padeiros</h2>
         <div class="pista-box">
@@ -157,6 +136,8 @@
         </div>
 
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
+        <div class="contador-distancia">Distância Restante:<br><span class="metros-valor">--</span> metros</div>
+        
         <button class="btn-gps" onclick="validarChegadaGPS(2, 3)">Validar Chegada pelo GPS</button>
         
         <hr class="hr-divisor">
@@ -165,7 +146,6 @@
         <button class="btn-secundario" onclick="forcarAvanco(2, 3)">Avançar (Manual)</button>
     </div>
 
-    <!-- TELA 3: CEMITÉRIO -->
     <div id="screen3" class="screen">
         <h2>🕰️ Mirante do Relógio</h2>
         <p>Você encontrou o Relojoeiro! Ele estava ajustando os ponteiros quando escutou passos correndo.</p>
@@ -180,6 +160,8 @@
         </div>
 
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
+        <div class="contador-distancia">Distância Restante:<br><span class="metros-valor">--</span> metros</div>
+
         <button class="btn-gps" onclick="validarChegadaGPS(3, 4)">Validar Chegada pelo GPS</button>
         
         <hr class="hr-divisor">
@@ -188,7 +170,6 @@
         <button class="btn-secundario" onclick="forcarAvanco(3, 4)">Avançar (Manual)</button>
     </div>
 
-    <!-- TELA 4: MUSEU CASTELINHO -->
     <div id="screen4" class="screen">
         <h2>🪦 Cemitério de Paranapiacaba</h2>
         <p>Um arrepio sobe pela espinha. Entre as antigas lápides, surge o Fantasma da vila!</p>
@@ -202,6 +183,8 @@
         </div>
 
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
+        <div class="contador-distancia">Distância Restante:<br><span class="metros-valor">--</span> metros</div>
+
         <button class="btn-gps" onclick="validarChegadaGPS(4, 5)">Validar Chegada pelo GPS</button>
         
         <hr class="hr-divisor">
@@ -210,7 +193,6 @@
         <button class="btn-secundario" onclick="forcarAvanco(4, 5)">Avançar (Manual)</button>
     </div>
 
-    <!-- TELA 5: CACHOEIRA -->
     <div id="screen5" class="screen">
         <h2>🏰 Museu Castelinho</h2>
         <p>O espírito do engenheiro-chefe, o Barão, te aguarda no escritório com a última peça do quebra-cabeça.</p>
@@ -225,6 +207,8 @@
         </div>
 
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
+        <div class="contador-distancia">Distância Restante:<br><span class="metros-valor">--</span> metros</div>
+
         <button class="btn-gps" onclick="validarChegadaGPS(5, 6)">Validar Chegada pelo GPS</button>
         
         <hr class="hr-divisor">
@@ -233,7 +217,6 @@
         <button class="btn-secundario" onclick="forcarAvanco(5, 6)">Avançar (Manual)</button>
     </div>
 
-    <!-- TELA 6: FINAL (VITÓRIA) -->
     <div id="screen6" class="screen">
         <h2>💖 Caso Encerrado!</h2>
         <p>O mapa apontou perfeitamente para o quadrado <b>E7</b>.</p>
@@ -241,35 +224,33 @@
         <h3 style="color: #ff4d4d; font-size: 24px;">Feliz Aniversário de Namoro!</h3>
     </div>
 
-    <!-- LÓGICA DO JOGO (JAVASCRIPT) -->
     <script>
         // ==========================================
-        // 1. COORDENADAS OFICIAIS (Convertidas para Decimal)
+        // 1. COORDENADAS OFICIAIS
         // ==========================================
         
         const TARGET_ESTACIONAMENTO = { lat: -23.779180, lng: -46.305736, raio: 80 }; 
         
-        // Dicionário de alvos para cada tela/fase da bússola
         const LOCAIS = {
-            1: { lat: -23.778778, lng: -46.302278, raio: 50 }, // Largo dos Padeiros
-            2: { lat: -23.777083, lng: -46.304194, raio: 50 }, // Mirante do Relógio
+            1: { lat: -23.778778, lng: -46.302278, raio: 50 }, // Largo
+            2: { lat: -23.777083, lng: -46.304194, raio: 50 }, // Mirante
             3: { lat: -23.778500, lng: -46.304833, raio: 50 }, // Cemitério
-            4: { lat: -23.778194, lng: -46.300750, raio: 50 }, // Museu Castelinho
-            5: { lat: -23.780306, lng: -46.301778, raio: 65 }  // Cachoeira (raio maior para floresta)
+            4: { lat: -23.778194, lng: -46.300750, raio: 50 }, // Castelinho
+            5: { lat: -23.780306, lng: -46.301778, raio: 65 }  // Cachoeira
         };
 
         let latAtual = 0;
         let lngAtual = 0;
         let watchId = null;
-        let targetBussola = LOCAIS[1]; // A bússola começa apontando pro Largo
+        let targetBussola = LOCAIS[1]; 
 
         // ==========================================
-        // 2. RASTREIO E CADEADO INICIAL
+        // 2. RASTREIO GPS E ATUALIZAÇÃO DO CONTADOR
         // ==========================================
         window.onload = function() {
             if (navigator.geolocation) {
                 watchId = navigator.geolocation.watchPosition(atualizarPosicao, erroGps, {
-                    enableHighAccuracy: true, maximumAge: 0, timeout: 10000
+                    enableHighAccuracy: true, maximumAge: 0, timeout: 5000
                 });
             } else {
                 document.getElementById('status-gps').innerText = "GPS não suportado.";
@@ -280,7 +261,7 @@
             latAtual = pos.coords.latitude;
             lngAtual = pos.coords.longitude;
 
-            // Verifica o Cadeado do Estacionamento apenas se estiver na Tela 0
+            // Lógica do Cadeado do Estacionamento
             if (document.getElementById('screen0').style.display !== "none") {
                 let distEst = calcularDistancia(latAtual, lngAtual, TARGET_ESTACIONAMENTO.lat, TARGET_ESTACIONAMENTO.lng);
                 if (distEst <= TARGET_ESTACIONAMENTO.raio) {
@@ -292,63 +273,86 @@
                     document.getElementById('btn-iniciar').disabled = false;
                 }
             }
+
+            // Atualiza os Contadores de Metros em todas as telas
+            if(targetBussola && latAtual !== 0) {
+                let distanciaAtual = Math.round(calcularDistancia(latAtual, lngAtual, targetBussola.lat, targetBussola.lng));
+                let elementosMetros = document.querySelectorAll('.metros-valor');
+                elementosMetros.forEach(el => {
+                    el.innerText = distanciaAtual;
+                });
+            }
         }
 
         function erroGps(err) { console.warn(`ERRO GPS: ${err.message}`); }
 
         // ==========================================
-        // 3. VALIDAÇÃO DE CHEGADA NOS PONTOS (GPS)
+        // 3. VALIDAÇÃO DE CHEGADA
         // ==========================================
         function validarChegadaGPS(faseAtual, proximaFase) {
             let alvo = LOCAIS[faseAtual];
             let dist = calcularDistancia(latAtual, lngAtual, alvo.lat, alvo.lng);
 
             if (dist <= alvo.raio) {
-                // Chegou no local!
                 mudarTela(faseAtual, proximaFase);
             } else {
-                alert(`Você ainda não chegou! O radar indica que você está a ${Math.round(dist)} metros do destino. Chegue mais perto.`);
+                alert(`Você ainda não chegou! O radar indica que faltam ${Math.round(dist)} metros. Chegue mais perto.`);
             }
         }
 
         // ==========================================
-        // 4. LÓGICA DA BÚSSOLA
+        // 4. LÓGICA DA BÚSSOLA CORRIGIDA
         // ==========================================
         let bussolaAtiva = false;
+        let rotacaoCSS = 0; // Armazena a rotação contínua para evitar o "giro louco"
+
         function iniciarBussola() {
-            if(bussolaAtiva) return; // Evita ativar duas vezes
+            if(bussolaAtiva) return; 
             if (window.DeviceOrientationEvent) {
                 window.addEventListener('deviceorientationabsolute', animarSetaBussola, true);
                 window.addEventListener('deviceorientation', animarSetaBussola, true);
                 bussolaAtiva = true;
-                alert("Radar ativado com sucesso! Gire o celular.");
+                alert("Radar ativado com sucesso! Faça um movimento de número 8 no ar com o celular para calibrar.");
             } else {
                 alert("Seu navegador não suporta a bússola.");
             }
         }
 
         function animarSetaBussola(event) {
+            if (latAtual === 0) return; // Aguarda o GPS ter localização
+
             let direcaoCelular = 0;
-            if (event.webkitCompassHeading) { direcaoCelular = event.webkitCompassHeading; } 
-            else if (event.alpha !== null) { direcaoCelular = 360 - event.alpha; }
+            if (event.webkitCompassHeading) { 
+                direcaoCelular = event.webkitCompassHeading; 
+            } else if (event.alpha !== null) { 
+                direcaoCelular = 360 - event.alpha; 
+            }
 
             let anguloDestino = calcularBearing(latAtual, lngAtual, targetBussola.lat, targetBussola.lng);
-            let rotacaoSeta = anguloDestino - direcaoCelular;
+            let novaRotacao = anguloDestino - direcaoCelular;
 
-            // Gira todas as setas visíveis
+            // --- A MÁGICA QUE EVITA O "GIRO LOUCO" ---
+            let diferenca = novaRotacao - (rotacaoCSS % 360);
+            
+            // Força a bússola a pegar o caminho mais curto (-180 a +180 graus)
+            if (diferenca > 180) diferenca -= 360;
+            if (diferenca < -180) diferenca += 360;
+            
+            rotacaoCSS += diferenca;
+
+            // Gira as setas suavemente
             let setas = document.querySelectorAll('.seta-bussola');
-            setas.forEach(seta => { seta.style.transform = `rotate(${rotacaoSeta}deg)`; });
+            setas.forEach(seta => { seta.style.transform = `rotate(${rotacaoCSS}deg)`; });
         }
 
         // ==========================================
-        // 5. TRANSIÇÕES E MATEMÁTICA
+        // 5. TRANSIÇÕES E FÓRMULAS MATEMÁTICAS
         // ==========================================
         function mudarTela(faseAtual, proximaFase) {
             document.getElementById("screen" + faseAtual).style.display = "none";
             document.getElementById("screen" + proximaFase).style.display = "block";
             window.scrollTo(0, 0);
 
-            // Atualiza o alvo da bússola para a PRÓXIMA missão
             if (LOCAIS[proximaFase]) {
                 targetBussola = LOCAIS[proximaFase];
             }
