@@ -58,7 +58,6 @@
         .pista-box { background-color: #333; padding: 15px; border-left: 4px solid #d4af37; margin: 20px 0; text-align: left; }
         .objetivo-box { background-color: #1f1f1f; padding: 15px; border: 1px dashed #d4af37; margin: 20px 0; color: #fff; }
         
-        /* Estilos Base dos Botões */
         button { border: none; padding: 12px 25px; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.3s; width: 100%; margin-bottom: 10px; }
         button:disabled { background-color: #555 !important; color: #888 !important; cursor: not-allowed; }
         
@@ -71,18 +70,16 @@
         .btn-gmaps { background-color: #4285F4; color: #fff; width: 85%; }
         .btn-gmaps:hover { background-color: #3367d6; }
 
-        /* Estilo do Radar Bússola (Vermelho -> Verde) */
         .btn-radar { background-color: #cc0000; color: #fff; }
         .btn-radar.ligado { background-color: #4CAF50; }
 
-        /* Área Secreta (Botão de Pânico Discreto) */
         .area-secreta {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 10px;
             margin-top: 30px;
-            opacity: 0.4; /* Deixa apagadinho */
+            opacity: 0.4; 
             transition: opacity 0.3s;
         }
         .area-secreta:hover { opacity: 1; }
@@ -108,6 +105,8 @@
         }
 
         #debug-panel { display: none; background: #000; color: #0f0; border: 1px solid #0f0; padding: 10px; font-size: 12px; text-align: left; margin-top: 20px; font-family: monospace;}
+        
+        select.dropdown-teste { width: 100%; padding: 10px; margin-bottom: 20px; background: #111; color: #fff; border: 1px solid #d4af37; border-radius: 5px; font-size: 16px;}
     </style>
 </head>
 <body>
@@ -118,6 +117,33 @@
         Lng: <span id="dbg-lng">0</span><br>
         Precisão: <span id="dbg-acc">0</span>m<br>
         Distância Alvo: <span id="dbg-dist">0</span>m
+    </div>
+
+    <div id="screen-test" class="screen">
+        <h2>🛠️ TESTE DE CALIBRAGEM</h2>
+        <p>Selecione o alvo para verificar a precisão do magnetômetro.</p>
+
+        <select id="alvo-teste" class="dropdown-teste" onchange="mudarAlvoTeste()">
+            <option value="99">Parque São Caetano (Teste Local)</option>
+            <option value="1">Largo dos Padeiros (Início)</option>
+            <option value="2">Mirante do Relógio</option>
+            <option value="3">Cemitério de Paranapiacaba</option>
+            <option value="4">Museu Castelinho</option>
+            <option value="5">Cachoeira / Casa Zen</option>
+            <option value="0">Estacionamento</option>
+        </select>
+
+        <button class="btn-radar" onclick="iniciarBussola()">Ligar Radar Bússola</button>
+        
+        <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
+        <div class="contador-distancia">Distância do Alvo Selecionado:<br><span class="metros-valor">--</span> metros</div>
+
+        <div class="area-secreta">
+            <input type="text" id="senha-teste" placeholder="Código">
+            <button onclick="forcarAvanco('teste', 0)">Ação</button>
+        </div>
+
+        <button class="btn-secundario" style="margin-top:20px; width:100%; padding: 15px;" onclick="sairTelaTeste()">Voltar ao Jogo</button>
     </div>
 
     <div id="screen0" class="screen">
@@ -132,7 +158,7 @@
 
         <div class="area-secreta">
             <input type="text" id="senha0" placeholder="Código">
-            <button onclick="forcarAvanco(0, 1)">Acesso Manual</button>
+            <button onclick="forcarAvanco(0, 1)">Manual</button>
         </div>
     </div>
 
@@ -145,7 +171,6 @@
         </div>
 
         <button class="btn-gps" onclick="validarChegadaGPS(1, 2)">Confirmar Coordenadas da Missão</button>
-        
         <button class="btn-radar" onclick="iniciarBussola()">Ligar Radar Bússola</button>
         
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
@@ -172,7 +197,6 @@
         </div>
 
         <button class="btn-gps" onclick="validarChegadaGPS(2, 3)">Confirmar Coordenadas da Missão</button>
-        
         <button class="btn-radar" onclick="iniciarBussola()">Ligar Radar Bússola</button>
         
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
@@ -200,7 +224,6 @@
         </div>
 
         <button class="btn-gps" onclick="validarChegadaGPS(3, 4)">Confirmar Coordenadas da Missão</button>
-        
         <button class="btn-radar" onclick="iniciarBussola()">Ligar Radar Bússola</button>
 
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
@@ -227,7 +250,6 @@
         </div>
 
         <button class="btn-gps" onclick="validarChegadaGPS(4, 5)">Confirmar Coordenadas da Missão</button>
-        
         <button class="btn-radar" onclick="iniciarBussola()">Ligar Radar Bússola</button>
 
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
@@ -255,7 +277,6 @@
         </div>
 
         <button class="btn-gps" onclick="validarChegadaGPS(5, 6)">Confirmar Coordenadas da Missão</button>
-        
         <button class="btn-radar" onclick="iniciarBussola()">Ligar Radar Bússola</button>
 
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
@@ -280,11 +301,13 @@
         const TARGET_ESTACIONAMENTO = { lat: -23.779180, lng: -46.305736, raio: 80 }; 
         
         const LOCAIS = {
-            1: { lat: -23.778778, lng: -46.302278, raio: 50 },
-            2: { lat: -23.777083, lng: -46.304194, raio: 50 },
-            3: { lat: -23.778500, lng: -46.304833, raio: 50 },
-            4: { lat: -23.778194, lng: -46.300750, raio: 50 },
-            5: { lat: -23.780306, lng: -46.301778, raio: 65 }
+            99: { lat: -23.632528, lng: -46.572000, raio: 50 }, // Parque São Caetano
+            1: { lat: -23.778778, lng: -46.302278, raio: 50 }, // Largo
+            2: { lat: -23.777083, lng: -46.304194, raio: 50 }, // Mirante
+            3: { lat: -23.778500, lng: -46.304833, raio: 50 }, // Cemitério
+            4: { lat: -23.778194, lng: -46.300750, raio: 50 }, // Castelinho
+            5: { lat: -23.780306, lng: -46.301778, raio: 65 }, // Cachoeira
+            0: TARGET_ESTACIONAMENTO
         };
 
         let latAtual = 0;
@@ -359,12 +382,10 @@
                 window.addEventListener('deviceorientationabsolute', animarSetaBussola, true);
                 bussolaAtiva = true;
                 
-                // Muda a cor e o texto de todos os botões de radar para verde
                 document.querySelectorAll('.btn-radar').forEach(btn => {
                     btn.classList.add('ligado');
                     btn.innerText = "Radar Ativo";
                 });
-                
             }
         }
 
@@ -385,23 +406,62 @@
         }
 
         function mudarTela(faseAtual, proximaFase) {
-            document.getElementById("screen" + faseAtual).style.display = "none";
+            document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
             document.getElementById("screen" + proximaFase).style.display = "block";
             window.scrollTo(0, 0);
             if (LOCAIS[proximaFase]) { targetBussola = LOCAIS[proximaFase]; }
         }
 
+        function mudarAlvoTeste() {
+            let selecao = document.getElementById('alvo-teste').value;
+            targetBussola = LOCAIS[selecao];
+            
+            if(latAtual !== 0) {
+                let dist = Math.round(calcularDistancia(latAtual, lngAtual, targetBussola.lat, targetBussola.lng));
+                document.querySelectorAll('.metros-valor').forEach(el => el.innerText = dist);
+            }
+        }
+
+        function sairTelaTeste() {
+            document.getElementById('screen-test').style.display = 'none';
+            document.getElementById('screen0').style.display = 'block';
+            targetBussola = LOCAIS[1]; 
+            window.scrollTo(0, 0);
+        }
+
         function forcarAvanco(faseAtual, proximaFase) {
             let idCampoSenha = "senha" + faseAtual;
-            let senhaDigitada = document.getElementById(idCampoSenha).value.trim().toLowerCase();
+            
+            // Tratamento especial para o input da tela de testes que não tem número
+            if(faseAtual === 'teste') {
+                idCampoSenha = "senha-teste";
+            }
+
+            let inputElement = document.getElementById(idCampoSenha);
+            if(!inputElement) return;
+
+            let senhaDigitada = inputElement.value.trim().toLowerCase();
             
             if(senhaDigitada === "debug") {
-                document.getElementById('debug-panel').style.display = "block";
-                document.getElementById(idCampoSenha).value = "";
+                let pnl = document.getElementById('debug-panel');
+                pnl.style.display = pnl.style.display === "block" ? "none" : "block";
+                inputElement.value = "";
+                return;
+            }
+
+            if(senhaDigitada === "debug2") {
+                document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+                document.getElementById('screen-test').style.display = 'block';
+                inputElement.value = "";
+                
+                // Força o alvo da lista atual
+                mudarAlvoTeste();
+                window.scrollTo(0, 0);
                 return;
             }
 
             if (senhaDigitada === "teste") {
+                if (faseAtual === 'teste') { alert("Use o botão 'Voltar ao Jogo' abaixo."); return; }
                 mudarTela(faseAtual, proximaFase);
             } else {
                 alert("Código inválido.");
