@@ -37,7 +37,7 @@
             line-height: 1.6;
             font-size: 16px;
         }
-        input[type="password"] {
+        input[type="password"], input[type="text"] {
             width: 80%;
             padding: 12px;
             font-size: 16px;
@@ -66,6 +66,18 @@
         
         .status-erro { color: #ff4d4d; font-weight: bold; margin-top: 10px; display: none; }
         .badge-portal { background-color: #d4af37; color: #1a1a1a; padding: 5px 10px; font-weight: bold; border-radius: 3px; display: inline-block; margin-bottom: 15px; text-transform: uppercase;}
+
+        /* Área de Teste Oculta e Discreta no Rodapé */
+        .area-teste-dev {
+            margin-top: 50px;
+            opacity: 0.15;
+            transition: opacity 0.3s;
+            padding-top: 20px;
+            border-top: 1px dashed #444;
+        }
+        .area-teste-dev:hover { opacity: 1; }
+        .area-teste-dev input { width: 40%; padding: 8px; margin: 0; font-size: 14px; }
+        .area-teste-dev button { width: auto; padding: 8px 15px; font-size: 14px; margin: 0 0 0 5px; background: #444; color: #fff; border: 1px solid #666; }
     </style>
 </head>
 <body>
@@ -92,14 +104,20 @@
             <h3 id="titulo-carta" style="color: #4CAF50; text-align: center; font-size: 20px;"></h3>
             <hr style="border: 1px solid #4CAF50; margin-bottom: 20px;">
             <p id="texto-carta"></p>
+            <button id="btn-voltar-teste" style="display:none; background:#444; color:#fff; margin-top:20px; width:100%;" onclick="window.location.reload()">Voltar aos Testes</button>
+        </div>
+
+        <!-- CAIXA DE TESTE SECRETA DO DESENVOLVEDOR (Sem textos ou dicas) -->
+        <div id="painel-teste" class="area-teste-dev">
+            <input type="text" id="senha-direta-teste" placeholder="...">
+            <button onclick="testarCartaDireto()">OK</button>
         </div>
     </div>
 
     <script>
-        // SEU NÚMERO DE WHATSAPP (Coloque seu número completo com DDD, ex: "5511999999999")
         const SEU_TELEFONE = "5511999999999"; 
 
-        // BANCO DE DADOS LOCAL DO SISTEMA (Senhas e Identificadores das 12 Cartas)
+        // BANCO DE DADOS LOCAL DO SISTEMA
         const PORTAIS = {
             "triste":    { nome: "Quando você estiver triste", senha: "abraco" },
             "feliz":     { nome: "Quando você estiver feliz", senha: "sorriso" },
@@ -115,7 +133,7 @@
             "relaxar":   { nome: "Quando o dia tiver sido exaustivo / Estresse", senha: "relaxar" }
         };
 
-        // TEXTOS PRELIMINARES DAS CARTAS (Serão expandidos e customizados por você)
+        // TEXTOS DAS CARTAS
         const TEXTOS_CARTAS = {
             "triste":    "Aqui vai o seu texto personalizado para quando ela estiver triste...",
             "feliz":     "Aqui vai o seu texto personalizado para quando ela estiver feliz...",
@@ -133,7 +151,6 @@
 
         let portalAtual = "";
 
-        // Captura automática do parâmetro ?tipo= no link ao carregar a página
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             const tipoUrl = urlParams.get('tipo');
@@ -142,36 +159,60 @@
                 portalAtual = tipoUrl;
                 document.getElementById('label-portal').innerText = PORTAIS[portalAtual].nome;
             } else {
+                // Mantém o layout de erro padrão caso acesse a URL limpa
+                document.getElementById('label-portal').innerText = "Erro de Protocolo";
+                document.getElementById('campo-senha').style.display = "none";
+                document.querySelector('.btn-desbloquear').style.display = "none";
+                document.querySelector('.btn-whatsapp').style.display = "none";
                 document.getElementById('area-bloqueada').innerHTML = "<h3>⚠️ ERRO DE PROTOCOLO</h3><p>Nenhum portal válido foi detectado. Escaneie um QR Code presente nas páginas do livro físico.</p>";
             }
         };
 
-        // Envia mensagem formatada para o seu WhatsApp abrindo o chat automaticamente
         function solicitarSenhaWhatsApp() {
             if (!portalAtual) return;
             let nomePortal = PORTAIS[portalAtual].nome;
             let textoMensagem = encodeURIComponent(`Amor, estou no livro e preciso da chave secreta para o portal: "${nomePortal}". Pode me passar? 🔑`);
-            let urlWhats = `https://wa.me/${SEU_TELEFONE}?text=${textoMensagem}`;
-            window.open(urlWhats, '_blank');
+            window.open(`https://wa.me/${SEU_TELEFONE}?text=${textoMensagem}`, '_blank');
         }
 
-        // Valida a senha digitada contra o banco de dados local
         function validarSenhaPortal() {
             if (!portalAtual) return;
-            
             let senhaDigitada = document.getElementById('campo-senha').value.trim().toLowerCase();
-            let senhaCorreta = PORTAIS[portalAtual].senha;
+            exibirConteudoGarantido(senhaDigitada, PORTAIS[portalAtual].senha);
+        }
 
-            if (senhaDigitada === senhaCorreta) {
+        // LÓGICA DE TESTE DIRETO POR SENHA (Mecânica solicitada)
+        function testarCartaDireto() {
+            let senhaTeste = document.getElementById('senha-direta-teste').value.trim().toLowerCase();
+            let chaveEncontrada = "";
+
+            // Varre o banco de dados procurando qual das 12 cartas possui essa senha
+            for (let chave in PORTAIS) {
+                if (PORTAIS[chave].senha === senhaTeste) {
+                    chaveEncontrada = chave;
+                    break;
+                }
+            }
+
+            if (chaveEncontrada !== "") {
+                portalAtual = chaveEncontrada;
+                exibirConteudoGarantido(senhaTeste, senhaTeste);
+                document.getElementById('btn-voltar-teste').style.display = "block"; // Permite recarregar e testar outra
+            } else {
+                alert("Nenhuma carta correspondente a essa senha.");
+            }
+        }
+
+        function exibirConteudoGarantido(digitada, correta) {
+            if (digitada === correta) {
                 document.getElementById('msg-erro').style.display = "none";
                 document.getElementById('area-bloqueada').style.display = "none";
+                document.getElementById('painel-teste').style.display = "none";
                 
-                // Configura e revela a carta secreta correspondente
                 document.getElementById('titulo-carta').innerText = PORTAIS[portalAtual].nome.toUpperCase();
                 document.getElementById('texto-carta').innerText = TEXTOS_CARTAS[portalAtual];
                 
-                let areaCarta = document.getElementById('area-carta');
-                areaCarta.style.display = "block";
+                document.getElementById('area-carta').style.display = "block";
                 window.scrollTo(0, 0);
             } else {
                 document.getElementById('msg-erro').style.display = "block";
