@@ -67,10 +67,10 @@
         .status-erro { color: #ff4d4d; font-weight: bold; margin-top: 10px; display: none; }
         .badge-portal { background-color: #d4af37; color: #1a1a1a; padding: 5px 10px; font-weight: bold; border-radius: 3px; display: inline-block; margin-bottom: 15px; text-transform: uppercase;}
 
-        /* Área de Teste Oculta e Discreta no Rodapé */
+        /* Painel Oculto Dev */
         .area-teste-dev {
             margin-top: 50px;
-            opacity: 0.15;
+            opacity: 0.2;
             transition: opacity 0.3s;
             padding-top: 20px;
             border-top: 1px dashed #444;
@@ -86,8 +86,12 @@
         <h2>📜 BIBLIOTECA DE EMOÇÕES</h2>
         <p><i>Arquivos Pessoais e Confidenciais de Investigação Coracional.</i></p>
 
-        <!-- AREA BLOQUEADA (APARECE DE INÍCIO) -->
-        <div id="area-bloqueada" class="box-bloqueio">
+        <div id="erro-protocolo-inicial" style="display: none;" class="box-bloqueio">
+            <h3 style="color: #ff4d4d; margin-top: 0;">⚠️ ERRO DE PROTOCOLO</h3>
+            <p>Nenhum portal válido foi detectado de forma automatizada. Escaneie um QR Code presente nas páginas do livro físico.</p>
+        </div>
+
+        <div id="area-bloqueada" class="box-bloqueio" style="display: none;">
             <span id="label-portal" class="badge-portal">Portal Detectado</span>
             <p>Atenção, Detetive. O arquivo que você está tentando acessar está criptografado sob rígido protocolo emocional.</p>
             <p>Para ler esta página do livro, <b>solicite a chave de acesso temporária</b> diretamente com o autor do caso.</p>
@@ -99,15 +103,13 @@
             <div id="msg-erro" class="status-erro">⚠️ Chave incorreta. Frequência não autorizada.</div>
         </div>
 
-        <!-- AREA DA CARTA (REVELADA APÓS A SENHA CORRETA) -->
         <div id="area-carta" class="box-conteudo">
             <h3 id="titulo-carta" style="color: #4CAF50; text-align: center; font-size: 20px;"></h3>
             <hr style="border: 1px solid #4CAF50; margin-bottom: 20px;">
             <p id="texto-carta"></p>
-            <button id="btn-voltar-teste" style="display:none; background:#444; color:#fff; margin-top:20px; width:100%;" onclick="window.location.reload()">Voltar aos Testes</button>
+            <button id="btn-voltar-teste" style="display:none; background:#444; color:#fff; margin-top:20px; width:100%;" onclick="window.location.href=window.location.pathname">Voltar aos Testes</button>
         </div>
 
-        <!-- CAIXA DE TESTE SECRETA DO DESENVOLVEDOR (Sem textos ou dicas) -->
         <div id="painel-teste" class="area-teste-dev">
             <input type="text" id="senha-direta-teste" placeholder="...">
             <button onclick="testarCartaDireto()">OK</button>
@@ -117,7 +119,7 @@
     <script>
         const SEU_TELEFONE = "5511999999999"; 
 
-        // BANCO DE DADOS LOCAL DO SISTEMA
+        // AS 12 SENHAS CONFIGURADAS
         const PORTAIS = {
             "triste":    { nome: "Quando você estiver triste", senha: "abraco" },
             "feliz":     { nome: "Quando você estiver feliz", senha: "sorriso" },
@@ -133,20 +135,20 @@
             "relaxar":   { nome: "Quando o dia tiver sido exaustivo / Estresse", senha: "relaxar" }
         };
 
-        // TEXTOS DAS CARTAS
+        // TEXTOS DAS 12 CARTAS
         const TEXTOS_CARTAS = {
-            "triste":    "Aqui vai o seu texto personalizado para quando ela estiver triste...",
-            "feliz":     "Aqui vai o seu texto personalizado para quando ela estiver feliz...",
-            "saudade":   "Aqui vai o seu texto personalizado para quando ela estiver com saudade...",
-            "briga":     "Aqui vai o seu texto personalizado para quando vocês estiverem brigados...",
-            "desejo":    "Aqui vai o seu texto personalizado para quando o desejo bater...",
-            "tpm":       "Aqui vai o seu texto personalizado para quando ela estiver de TPM...",
-            "partiu":    "Aqui vai o seu texto personalizado para quando ela quiser sair...",
-            "socorro":   "Aqui vai o seu texto personalizado para quando ela precisar de ajuda...",
-            "gula":      "Aqui vai o seu texto personalizado para quando ela tiver fome/desejo de doce ou comida...",
-            "preguica":  "Aqui vai o seu texto personalizado para o Vale-Preguiça de cinema...",
-            "rainha":    "Aqui vai o seu texto personalizado para o momento SPA / Salão de beleza...",
-            "relaxar":   "Aqui vai o seu texto personalizado para quando ela estiver exausta do dia..."
+            "triste":    "Texto personalizado para quando ela estiver triste... (Ainda vamos escrever juntos)",
+            "feliz":     "Texto personalizado para quando ela estiver feliz... (Ainda vamos escrever juntos)",
+            "saudade":   "Texto personalizado para quando ela estiver com saudade... (Ainda vamos escrever juntos)",
+            "briga":     "Texto personalizado para quando vocês estiverem brigados... (Ainda vamos escrever juntos)",
+            "desejo":    "Texto personalizado para quando o desejo bater... (Ainda vamos escrever juntos)",
+            "tpm":       "Texto personalizado para quando ela estiver de TPM... (Ainda vamos escrever juntos)",
+            "partiu":    "Texto personalizado para quando ela quiser sair... (Ainda vamos escrever juntos)",
+            "socorro":   "Texto personalizado para quando ela precisar de ajuda... (Ainda vamos escrever juntos)",
+            "gula":      "Hummm, bateu aquela fome ou desejo de comer algo especial? 🍟🍕 Esse é o seu sinal oficial! Peça a chave para mim e vamos decidir o cardápio ou ativar o delivery agora mesmo!",
+            "preguica":  "Texto personalizado para o Vale-Preguiça de cinema... (Ainda vamos escrever juntos)",
+            "rainha":    "Texto personalizado para o momento SPA / Salão de beleza... (Ainda vamos escrever juntos)",
+            "relaxar":   "Texto personalizado para quando ela estiver exausta do dia... (Ainda vamos escrever juntos)"
         };
 
         let portalAtual = "";
@@ -158,13 +160,10 @@
             if (tipoUrl && PORTAIS[tipoUrl]) {
                 portalAtual = tipoUrl;
                 document.getElementById('label-portal').innerText = PORTAIS[portalAtual].nome;
+                document.getElementById('area-bloqueada').style.display = "block";
             } else {
-                // Mantém o layout de erro padrão caso acesse a URL limpa
-                document.getElementById('label-portal').innerText = "Erro de Protocolo";
-                document.getElementById('campo-senha').style.display = "none";
-                document.querySelector('.btn-desbloquear').style.display = "none";
-                document.querySelector('.btn-whatsapp').style.display = "none";
-                document.getElementById('area-bloqueada').innerHTML = "<h3>⚠️ ERRO DE PROTOCOLO</h3><p>Nenhum portal válido foi detectado. Escaneie um QR Code presente nas páginas do livro físico.</p>";
+                // Se entrar limpo, exibe o aviso padrão, mas NÃO quebra o painel de testes abaixo
+                document.getElementById('erro-protocolo-inicial').style.display = "block";
             }
         };
 
@@ -178,15 +177,18 @@
         function validarSenhaPortal() {
             if (!portalAtual) return;
             let senhaDigitada = document.getElementById('campo-senha').value.trim().toLowerCase();
-            exibirConteudoGarantido(senhaDigitada, PORTAIS[portalAtual].senha);
+            if (senhaDigitada === PORTAIS[portalAtual].senha) {
+                exibirConteudoGarantido();
+            } else {
+                document.getElementById('msg-erro').style.display = "block";
+            }
         }
 
-        // LÓGICA DE TESTE DIRETO POR SENHA (Mecânica solicitada)
+        // CORREÇÃO DA LOGICA DE TESTE DIRETO POR SENHA
         function testarCartaDireto() {
             let senhaTeste = document.getElementById('senha-direta-teste').value.trim().toLowerCase();
             let chaveEncontrada = "";
 
-            // Varre o banco de dados procurando qual das 12 cartas possui essa senha
             for (let chave in PORTAIS) {
                 if (PORTAIS[chave].senha === senhaTeste) {
                     chaveEncontrada = chave;
@@ -196,27 +198,23 @@
 
             if (chaveEncontrada !== "") {
                 portalAtual = chaveEncontrada;
-                exibirConteudoGarantido(senhaTeste, senhaTeste);
-                document.getElementById('btn-voltar-teste').style.display = "block"; // Permite recarregar e testar outra
+                exibirConteudoGarantido();
+                document.getElementById('btn-voltar-teste').style.display = "block"; 
             } else {
-                alert("Nenhuma carta correspondente a essa senha.");
+                alert("Nenhuma carta encontrada com esta senha.");
             }
         }
 
-        function exibirConteudoGarantido(digitada, correta) {
-            if (digitada === correta) {
-                document.getElementById('msg-erro').style.display = "none";
-                document.getElementById('area-bloqueada').style.display = "none";
-                document.getElementById('painel-teste').style.display = "none";
-                
-                document.getElementById('titulo-carta').innerText = PORTAIS[portalAtual].nome.toUpperCase();
-                document.getElementById('texto-carta').innerText = TEXTOS_CARTAS[portalAtual];
-                
-                document.getElementById('area-carta').style.display = "block";
-                window.scrollTo(0, 0);
-            } else {
-                document.getElementById('msg-erro').style.display = "block";
-            }
+        function exibirConteudoGarantido() {
+            document.getElementById('erro-protocolo-inicial').style.display = "none";
+            document.getElementById('area-bloqueada').style.display = "none";
+            document.getElementById('painel-teste').style.display = "none";
+            
+            document.getElementById('titulo-carta').innerText = PORTAIS[portalAtual].nome.toUpperCase();
+            document.getElementById('texto-carta').innerText = TEXTOS_CARTAS[portalAtual];
+            
+            document.getElementById('area-carta').style.display = "block";
+            window.scrollTo(0, 0);
         }
     </script>
 </body>
