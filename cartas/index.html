@@ -151,10 +151,8 @@
     </div>
 
     <script>
-        // O SEU NÚMERO CONFIGURADO
         const SEU_TELEFONE = "5511991688679"; 
 
-        // CONFIGURAÇÃO GERAL DOS 12 PORTAIS
         const PORTAIS = {
             "triste":    { nome: "Quando você estiver triste", senha: "abraco", formato: "ligar" },
             "feliz":     { nome: "Quando você estiver feliz", senha: "sorriso", formato: "alerta" },
@@ -170,7 +168,6 @@
             "relaxar":   { nome: "Quando o dia tiver sido exaustivo / Estresse", senha: "relaxar", formato: "agendar" }
         };
 
-        // TEXTOS CONTEXTUAIS
         const TEXTOS_CARTAS = {
             "triste":    "Meu amor, se o mundo lá fora parece cinza ou pesado demais hoje, saiba que o meu abraço continua sendo o seu porto seguro inabalável. Não guarde nada disso só para você. Eu amo cada pedacinho seu, inclusive as suas fases difíceis. Para que eu possa te ouvir agora mesmo, clique no botão abaixo para me ligar de imediato.",
             "feliz":     "Ver você sorrir e conquistar os seus objetivos é, sem dúvidas, a minha maior alegria diária! Sou o seu fã número um em todas as horas. Clique abaixo para compartilhar essa conquista comigo no WhatsApp para celebrarmos juntos agora!",
@@ -218,7 +215,6 @@
             }
         }
 
-        // Lógica do painel de teste
         function testarCartaDireto() {
             let senhaTeste = document.getElementById('senha-direta-teste').value.trim().toLowerCase();
             let chaveEncontrada = "";
@@ -239,7 +235,6 @@
             }
         }
 
-        // Função principal de revelar o conteúdo e injetar os botões
         function exibirConteudoGarantido() {
             document.getElementById('erro-protocolo-inicial').style.display = "none";
             document.getElementById('area-bloqueada').style.display = "none";
@@ -269,7 +264,7 @@
                 container.innerHTML = `
                     <div class="form-agendamento">
                         <label>Escreva aqui sua sugestão, local ou detalhes do plano:</label>
-                        <textarea id="txt-sugestao-plano" placeholder="Ex: Quero ir naquele restaurante no sábado à noite..."></textarea>
+                        <textarea id="txt-sugestao-plano" placeholder="Digite aqui todos os detalhes do que você está imaginando para nós..."></textarea>
                         <button class="btn-whatsapp" onclick="enviarAgendamentoCompleto()">🗓️ Confirmar e Agendar no WhatsApp</button>
                     </div>`;
             }
