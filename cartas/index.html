@@ -13,7 +13,7 @@
             margin: 0;
             padding: 20px;
         }
-        h1, h2 { color: #d4af37; }
+        h1, h2, h3 { color: #d4af37; }
         .container {
             max-width: 600px;
             margin: 0 auto;
@@ -37,37 +37,67 @@
             line-height: 1.6;
             font-size: 16px;
         }
-        input[type="password"], input[type="text"] {
-            width: 80%;
+        .form-agendamento {
+            background-color: #1a1a1a;
+            padding: 15px;
+            border: 1px solid #d4af37;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .form-agendamento label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #d4af37;
+            font-size: 14px;
+        }
+        textarea, input[type="text"], input[type="password"] {
+            width: 100%;
             padding: 12px;
             font-size: 16px;
             border: 1px solid #d4af37;
             border-radius: 5px;
             background-color: #222;
             color: #fff;
-            text-align: center;
+            box-sizing: border-box;
             margin-bottom: 15px;
+            font-family: inherit;
         }
+        input[type="password"], input#senha-direta-teste {
+            text-align: center;
+        }
+        textarea { height: 80px; resize: none; }
+        
         button {
             border: none;
-            padding: 12px 25px;
+            padding: 14px 25px;
             font-size: 16px;
             font-weight: bold;
             border-radius: 5px;
             cursor: pointer;
             transition: 0.3s;
-            width: 85%;
+            width: 100%;
             margin-bottom: 10px;
+            font-family: inherit;
         }
         .btn-desbloquear { background-color: #4CAF50; color: #fff; }
         .btn-desbloquear:hover { background-color: #45a049; }
         .btn-whatsapp { background-color: #25D366; color: #fff; }
         .btn-whatsapp:hover { background-color: #128C7E; }
+        .btn-ligar { background-color: #008CBA; color: #fff; }
+        .btn-ligar:hover { background-color: #007B9A; }
+        .btn-sos { background-color: #cc0000; color: #fff; animation: pulsar 1.5s infinite; }
         
+        @keyframes pulsar {
+            0% { box-shadow: 0 0 0 0 rgba(204, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(204, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(204, 0, 0, 0); }
+        }
+
         .status-erro { color: #ff4d4d; font-weight: bold; margin-top: 10px; display: none; }
         .badge-portal { background-color: #d4af37; color: #1a1a1a; padding: 5px 10px; font-weight: bold; border-radius: 3px; display: inline-block; margin-bottom: 15px; text-transform: uppercase;}
 
-        /* Painel Oculto Dev */
         .area-teste-dev {
             margin-top: 50px;
             opacity: 0.2;
@@ -104,51 +134,56 @@
         </div>
 
         <div id="area-carta" class="box-conteudo">
-            <h3 id="titulo-carta" style="color: #4CAF50; text-align: center; font-size: 20px;"></h3>
+            <h3 id="titulo-carta" style="text-align: center; font-size: 20px;"></h3>
             <hr style="border: 1px solid #4CAF50; margin-bottom: 20px;">
+            
             <p id="texto-carta"></p>
-            <button id="btn-voltar-teste" style="display:none; background:#444; color:#fff; margin-top:20px; width:100%;" onclick="window.location.href=window.location.pathname">Voltar aos Testes</button>
+
+            <div id="container-recompensa"></div>
+
+            <button id="btn-voltar-teste" style="display:none; background:#444; color:#fff; margin-top:30px;" onclick="window.location.href=window.location.pathname">Voltar aos Testes</button>
         </div>
 
         <div id="painel-teste" class="area-teste-dev">
             <input type="text" id="senha-direta-teste" placeholder="...">
-            <button onclick="testarCartaDireto()">OK</button>
+            <button onclick="testarCartaDirecto()">OK</button>
         </div>
     </div>
 
     <script>
-        const SEU_TELEFONE = "5511999999999"; 
+        // SEU NÚMERO DE TELEFONE ATUALIZADO E CONFIGURADO ESTRUTURALMENTE
+        const SEU_TELEFONE = "5511991688679"; 
 
-        // AS 12 SENHAS CONFIGURADAS
+        // CONFIGURAÇÃO GERAL DOS 12 PORTAIS
         const PORTAIS = {
-            "triste":    { nome: "Quando você estiver triste", senha: "abraco" },
-            "feliz":     { nome: "Quando você estiver feliz", senha: "sorriso" },
-            "saudade":   { nome: "Quando você estiver com saudade", senha: "juntos" },
-            "briga":     { nome: "Quando estivermos brigados", senha: "paz" },
-            "desejo":    { nome: "Quando o desejo bater (Romantismo)", senha: "fogo" },
-            "tpm":       { nome: "Quando você estiver de TPM", senha: "doce" },
-            "partiu":    { nome: "Quando quiser sair / se divertir", senha: "partiu" },
-            "socorro":   { nome: "Quando precisar de ajuda (qualquer coisa)", senha: "socorro" },
-            "gula":      { nome: "Quando tiver um desejo de comida / fome", senha: "gula" },
-            "preguica":  { nome: "Quando quiser um Vale-Preguiça (Cinema/Maratona)", senha: "preguica" },
-            "rainha":    { nome: "Quando quiser um momento SPA / Beleza", senha: "rainha" },
-            "relaxar":   { nome: "Quando o dia tiver sido exaustivo / Estresse", senha: "relaxar" }
+            "triste":    { nome: "Quando você estiver triste", senha: "abraco", formato: "ligar" },
+            "feliz":     { nome: "Quando você estiver feliz", senha: "sorriso", formato: "alerta" },
+            "saudade":   { nome: "Quando você estiver com saudade", senha: "juntos", formato: "agendar" },
+            "briga":     { nome: "Quando estivermos brigados", senha: "paz", formato: "ligar" },
+            "desejo":    { nome: "Quando o desejo bater (Romantismo)", senha: "fogo", formato: "agendar" },
+            "tpm":       { nome: "Quando você estiver de TPM", senha: "doce", formato: "pix" },
+            "partiu":    { nome: "Quando quiser sair / se divertir", senha: "partiu", formato: "agendar" },
+            "socorro":   { nome: "Quando precisar de ajuda (qualquer coisa)", senha: "socorro", formato: "sos" },
+            "gula":      { nome: "Quando tiver um desejo de comida / fome", senha: "gula", formato: "agendar" },
+            "preguica":  { nome: "Quando quiser um Vale-Preguiça (Cinema)", senha: "preguica", formato: "agendar" },
+            "rainha":    { nome: "Quando quiser um momento SPA / Beleza", senha: "rainha", formato: "pix" },
+            "relaxar":   { nome: "Quando o dia tiver sido exaustivo / Estresse", senha: "relaxar", formato: "agendar" }
         };
 
-        // TEXTOS DAS 12 CARTAS
+        // TEXTOS CONTEXTUAIS QUE APARECEM ANTES DAS RECOMPENSAS
         const TEXTOS_CARTAS = {
-            "triste":    "Texto personalizado para quando ela estiver triste... (Ainda vamos escrever juntos)",
-            "feliz":     "Texto personalizado para quando ela estiver feliz... (Ainda vamos escrever juntos)",
-            "saudade":   "Texto personalizado para quando ela estiver com saudade... (Ainda vamos escrever juntos)",
-            "briga":     "Texto personalizado para quando vocês estiverem brigados... (Ainda vamos escrever juntos)",
-            "desejo":    "Texto personalizado para quando o desejo bater... (Ainda vamos escrever juntos)",
-            "tpm":       "Texto personalizado para quando ela estiver de TPM... (Ainda vamos escrever juntos)",
-            "partiu":    "Texto personalizado para quando ela quiser sair... (Ainda vamos escrever juntos)",
-            "socorro":   "Texto personalizado para quando ela precisar de ajuda... (Ainda vamos escrever juntos)",
-            "gula":      "Hummm, bateu aquela fome ou desejo de comer algo especial? 🍟🍕 Esse é o seu sinal oficial! Peça a chave para mim e vamos decidir o cardápio ou ativar o delivery agora mesmo!",
-            "preguica":  "Texto personalizado para o Vale-Preguiça de cinema... (Ainda vamos escrever juntos)",
-            "rainha":    "Texto personalizado para o momento SPA / Salão de beleza... (Ainda vamos escrever juntos)",
-            "relaxar":   "Texto personalizado para quando ela estiver exausta do dia... (Ainda vamos escrever juntos)"
+            "triste":    "Meu amor, se o world lá fora parece cinza ou pesado demais hoje, saiba que o meu abraço continua sendo o seu porto seguro inabalável. Não guarde nada disso só para você. Eu amo cada pedacinho seu, inclusive as suas fases difíceis. Para que eu possa te ouvir agora mesmo, clique no botão abaixo para me ligar de imediato.",
+            "feliz":     "Ver você sorrir e conquistar os seus objetivos é, sem dúvidas, a minha maior alegria diária! Sou o seu fã número um em todas as horas. Clique abaixo para compartilhar essa conquista comigo no WhatsApp para celebrarmos juntos agora!",
+            "saudade":   "A distância às vezes aperta o peito, mas ela só serve para mostrar o tamanho real do que sentimos. Cada segundo longe é só um lembrete do quanto eu quero estar perto. Escreva abaixo o que você quer fazer no nosso próximo encontro para eu já deixar tudo planejado!",
+            "briga":     "Meu amor, sei que momentos difíceis e desentendimentos acontecem, mas o meu amor por você é infinitamente maior do que qualquer orgulho ou teimosia. Me desculpe por qualquer palavra ou atitude que tenha te magoado. Eu quero que fiquemos bem, pois você é a minha escolha de todos os dias. Clique abaixo para falar diretamente comigo e deixarmos isso para trás.",
+            "desejo":    "A saudade do seu toque, do seu cheiro e do calor do seu beijo bateu forte por aí? Por aqui ela é constante. Que tal planejarmos uma noite completamente nossa, especial e inesquecível? Sugira abaixo o plano ou local que você quer e envie para o meu radar.",
+            "tpm":       "Eu sei bem que esses dias são difíceis, cheios de dores e sensibilidades que eu mal posso mensurar. Mas eu posso (e quero) adoçar o seu dia! O seu 'Vale-Doce/iFood via Pix' foi devidamente autorizado por mim. Clique no botão abaixo para disparar a notificação para mim e eu te faço a transferência agora mesmo para você pedir o que quiser!",
+            "partiu":    "Chega de rotina! Você acabou de ativar o seu passe livre de encontros. Escreva na caixa de texto abaixo qual lugar você está morrendo de vontade de conhecer, ir ou comer, que eu vou te levar lá! É só enviar e nós vamos combinar.",
+            "socorro":   "🚨 PROTOCOLO MARIDO DE ALUGUEL / FAZ-TUDO EM EMERGÊNCIA 🚨\nSeja um problema prático dentro de casa, uma tomada que parou, um pneu, ou só um turbilhão emocional que precisa de intervenção rápida: o seu solucionador de problemas oficial de 24h a 48h foi notificado. Clique no botão vermelho abaixo para disparar o Alerta Máximo no meu celular!",
+            "gula":      "Hummm, a fome bateu ou surgiu aquele desejo incontrolável por uma comida específica? 🍟🍕 Esse é o seu sinal oficial! Escreva abaixo exatamente o que você quer comer e de onde, que o patrocínio e a companhia do jantar já estão garantidos por mim!",
+            "preguica":  "Protocolo 'Preguiça de Cinema' ativado com sucesso! Hoje o mundo lá fora não importa. O plano é deitar no sofá, esquecer os problemas, maratonar o que você quiser ou jogar videogame com muito dengo e pipoca. Escreva abaixo qual vai ser o cardápio da maratona e me envie!",
+            "rainha":    "Você merece um dia inteirinho dedicado a você, para relaxar, cuidar da beleza e se sentir a rainha que você já é todos os dias. O seu 'Vale-SPA / Salão de R$ 50' via Pix está liberado e carimbado. Clique abaixo para me avisar e eu transfiro o valor na hora para você agendar sua unha ou massagem!",
+            "relaxar":   "O dia foi exaustivo, o trabalho ou os estudos sugaram a sua energia e você está esgotada? Calma. Seu descanso começou. Você acabou de ganhar uma massagem relaxante completa feita por mim. Escolha abaixo a melhor sugestão de data e hora para o seu relaxamento e me envie."
         };
 
         let portalAtual = "";
@@ -162,7 +197,6 @@
                 document.getElementById('label-portal').innerText = PORTAIS[portalAtual].nome;
                 document.getElementById('area-bloqueada').style.display = "block";
             } else {
-                // Se entrar limpo, exibe o aviso padrão, mas NÃO quebra o painel de testes abaixo
                 document.getElementById('erro-protocolo-inicial').style.display = "block";
             }
         };
@@ -170,8 +204,8 @@
         function solicitarSenhaWhatsApp() {
             if (!portalAtual) return;
             let nomePortal = PORTAIS[portalAtual].nome;
-            let textoMensagem = encodeURIComponent(`Amor, estou no livro e preciso da chave secreta para o portal: "${nomePortal}". Pode me passar? 🔑`);
-            window.open(`https://wa.me/${SEU_TELEFONE}?text=${textoMensagem}`, '_blank');
+            let texto = encodeURIComponent(`Amor, estou no livro e preciso da chave secreta para o portal: "${nomePortal}". Pode me passar? 🔑`);
+            window.open(`https://wa.me/${SEU_TELEFONE}?text=${texto}`, '_blank');
         }
 
         function validarSenhaPortal() {
@@ -184,7 +218,6 @@
             }
         }
 
-        // CORREÇÃO DA LOGICA DE TESTE DIRETO POR SENHA
         function testarCartaDireto() {
             let senhaTeste = document.getElementById('senha-direta-teste').value.trim().toLowerCase();
             let chaveEncontrada = "";
@@ -213,8 +246,61 @@
             document.getElementById('titulo-carta').innerText = PORTAIS[portalAtual].nome.toUpperCase();
             document.getElementById('texto-carta').innerText = TEXTOS_CARTAS[portalAtual];
             
+            const container = document.getElementById('container-recompensa');
+            container.innerHTML = ""; 
+
+            let formato = PORTAIS[portalAtual].formato;
+
+            if (formato === "ligar") {
+                container.innerHTML = `<button class="btn-ligar" onclick="fazerLigacaoDireta()">📞 Ligar para o Meu Amor Agora</button>`;
+            } 
+            else if (formato === "alerta") {
+                container.innerHTML = `<button class="btn-whatsapp" onclick="enviarAlertaSimples()">💝 Compartilhar Alegria via WhatsApp</button>`;
+            }
+            else if (formato === "pix") {
+                container.innerHTML = `<button class="btn-whatsapp" style="background-color: #00b3a4;" onclick="solicitarPixMimo()">📱 Ativar Vale-Pix e Notificar meu Amor</button>`;
+            }
+            else if (formato === "sos") {
+                container.innerHTML = `<button class="btn-sos" onclick="dispararAlertaSOS()">🚨 DISPARAR ALERTA DE EMERGÊNCIA (SOS)</button>`;
+            }
+            else if (formato === "agendar") {
+                container.innerHTML = `
+                    <div class="form-agendamento">
+                        <label>Escreva aqui sua sugestão, local ou detalhes do plano:</label>
+                        <textarea id="txt-sugestao-plano" placeholder="Ex: Quero ir naquele restaurante japonês no sábado à noite..."></textarea>
+                        <button class="btn-whatsapp" onclick="enviarAgendamentoCompleto()">🗓️ Confirmar e Agendar no WhatsApp</button>
+                    </div>`;
+            }
+
             document.getElementById('area-carta').style.display = "block";
             window.scrollTo(0, 0);
+        }
+
+        function fazerLigacaoDireta() {
+            window.location.href = `tel:${SEU_TELEFONE}`;
+        }
+
+        function enviarAlertaSimples() {
+            let msg = encodeURIComponent(`🥰 Amor! Acabei de abrir o portal "${PORTAIS[portalAtual].nome}" no meu livro e quis te mandar esse oi para dizer que estou muito feliz!`);
+            window.open(`https://wa.me/${SEU_TELEFONE}?text=${msg}`, '_blank');
+        }
+
+        function solicitarPixMimo() {
+            let msg = encodeURIComponent(`💰 *VALE-PIX ATIVADO!* 💰\n\nAmor, acabei de abrir o portal "${PORTAIS[portalAtual].nome}" no livro! Conforme o combinado no regulamento, o Pix está carimbado e autorizado. Pode transferir quando puder! 🥰`);
+            window.open(`https://wa.me/${SEU_TELEFONE}?text=${msg}`, '_blank');
+        }
+
+        function dispararAlertaSOS() {
+            let msg = encodeURIComponent(`🚨 *ALERTA DE EMERGÊNCIA ATIVADO (SOS)* 🚨\n\nAmor! Acabei de acionar o botão de pânico na minha Biblioteca de Emoções. Estou precisando do meu assistente oficial e faz-tudo para resolver um perrengue ou me dar suporte dentro do prazo de 24h/48h! Me chama aqui!`);
+            window.open(`https://wa.me/${SEU_TELEFONE}?text=${msg}`, '_blank');
+        }
+
+        function enviarAgendamentoCompleto() {
+            let sugestao = document.getElementById('txt-sugestao-plano').value.trim();
+            if(!sugestao) { alert("Por favor, escreva o seu desejo ou plano antes de enviar!"); return; }
+
+            let msg = encodeURIComponent(`🗓️ *SOLICITAÇÃO DE AGENDAMENTO* 🗓️\n\nAmor, ativei o portal do livro: *"${PORTAIS[portalAtual].nome}"*!\n\nMinha sugestão de plano/local é:\n"${sugestao}"\n\nVamos combinar? Aguardo sua confirmação! 😍`);
+            window.open(`https://wa.me/${SEU_TELEFONE}?text=${msg}`, '_blank');
         }
     </script>
 </body>
