@@ -49,6 +49,7 @@
         .seta-bussola { font-size: 50px; transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); transform: rotate(0deg); }
         .contador-distancia { font-size: 18px; color: #4CAF50; background-color: #111; padding: 10px; border-radius: 5px; border: 1px solid #4CAF50; margin-bottom: 20px; display: inline-block; width: 80%; }
         .metros-valor { font-size: 24px; font-weight: bold; }
+        
         .pista-box { background-color: #333; padding: 15px; border-left: 4px solid #d4af37; margin: 20px 0; text-align: left; }
         .objetivo-box { background-color: #1f1f1f; padding: 15px; border: 1px dashed #d4af37; margin: 20px 0; color: #fff; }
         
@@ -63,6 +64,7 @@
         .btn-radar { background-color: #cc0000; color: #fff; }
         .btn-radar.ligado { background-color: #4CAF50; }
 
+        /* Estilo da Área Secreta Discreta */
         .area-secreta { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 30px; opacity: 0.4; transition: opacity 0.3s; }
         .area-secreta:hover { opacity: 1; }
         .area-secreta input[type="text"] { width: 120px; padding: 8px; margin: 0; font-size: 14px; border: 1px solid #555; border-radius: 5px; background-color: #111; color: #fff; text-align: center; }
@@ -74,7 +76,7 @@
 </head>
 <body>
 
-    <!-- PAINEL DE TESTES OCULTO (debug) -->
+    <!-- PAINEL DE TESTES OCULTO (Ativado com a senha 'debug') -->
     <div id="debug-panel">
         <b>[MODO DESENVOLVEDOR]</b><br>
         Lat: <span id="dbg-lat">0</span><br>
@@ -83,7 +85,7 @@
         Distância Alvo: <span id="dbg-dist">0</span>m
     </div>
 
-    <!-- TELA SECRETA DE TESTE DE BÚSSOLA (debug2) -->
+    <!-- TELA SECRETA DE TESTE DE BÚSSOLA (Ativada com a senha 'debug2') -->
     <div id="screen-test" class="screen">
         <h2>🛠️ TESTE DE CALIBRAGEM</h2>
         <select id="alvo-teste" class="dropdown-teste" onchange="mudarAlvoTeste()">
@@ -107,165 +109,204 @@
 
     <!-- TELA 0: ESTACIONAMENTO E TIMER -->
     <div id="screen0" class="screen">
-        <h2>SISTEMA DETETIVE ATIVADO</h2>
+        <h2>RADAR DE INVESTIGAÇÃO VITORIANA</h2>
         
-        <!-- PAINEL DO RELÓGIO REGRESSIVO -->
         <div id="contador-container">
-            <div id="titulo-timer">Protocolo de Tempo Bloqueado</div>
+            <div id="titulo-timer">SINAL BLOQUEADO PELA NÉVOA</div>
             <div id="timer-regressivo">Carregando...</div>
             <div id="legenda-timer">HORAS &nbsp;:&nbsp; MINUTOS &nbsp;:&nbsp; SEGUNDOS</div>
         </div>
 
         <div id="icone-cadeado" class="cadeado-fechado">🔒</div>
-        <p id="status-gps" style="text-align: center; font-weight: bold; color: #ff4d4d;">Aguardando Liberação Temporal...</p>
-        <p><small>O caso só será desbloqueado quando o satélite confirmar sua presença no estacionamento após o tempo estipulado.</small></p>
+        <p id="status-gps" style="text-align: center; font-weight: bold; color: #ff4d4d;">⏳ PROTOCOLO CRONOLÓGICO: Aguardando o dia do caso...</p>
+        
+        <p>Detetive, uma frequência misteriosa foi interceptada nos antigos trilhos da São Paulo Railway. Os arquivos indicam que um artefato de valor inestimável — o meu coração — foi levado da vila. O relógio acima marca o tempo necessário para que as correntes magnéticas se alinhem. Quando o contador zerar, o radar será ativado. Sua missão começará no instante em que você pisar em solo histórico.</p>
         
         <button id="btn-iniciar" class="btn-principal" onclick="mudarTela(0, 1)" disabled>Iniciar Investigação</button>
 
         <div class="area-secreta">
-            <input type="text" id="senha0" placeholder="Código">
-            <button onclick="forcarAvanco(0, 1)">Manual</button>
+            <input type="text" id="senha0" placeholder="[Frequência]">
+            <button onclick="forcarAvanco(0, 1)">Conexão Manual</button>
         </div>
     </div>
 
     <!-- TELA 1: LARGO DOS PADEIROS -->
     <div id="screen1" class="screen">
-        <h2>🕵️‍♀️ O Caso Foi Aberto</h2>
-        <p>Bem-vinda, Detetive. Um crime terrível ocorreu em Paranapiacaba: meu coração foi roubado!</p>
+        <h2>📂 CASO #1307: O ROUBO DO SÉCULO</h2>
+        <p>Atenção, Detetive. O alerta geral foi emitido pelas antigas cornetas da estação. O nevoeiro baixou repentinamente sobre a vila histórica e, sob o manto cinzento, um crime silencioso aconteceu: <b>o meu coração foi roubado</b>.</p>
+        <p>Os arquivos indicam que o suspeito fugiu em direção ao coração da parte baixa da vila. Você tem em mãos uma prancheta com o mapa e o gabarito lógico de Paranapiacaba. Use-os com sabedoria. Cada parada revelará pistas cruciais para eliminar os suspeitos e os locais falsos.</p>
+        
         <div class="objetivo-box">
-            <b>📍 Seu Primeiro Objetivo:</b><br>
-            A perícia isolou o local onde a vítima foi vista pela última vez. Siga para o <b>Largo dos Padeiros</b>.
+            <b>📍 MISSÃO ATUAL: RASTREAR O LOCAL DO CRIME</b><br><br>
+            A perícia isolou a área onde o coração foi visto pela última vez. Deixe o estacionamento, cruze a passarela histórica sobre os trilhos e desça a colina em direção ao <b>Largo dos Padeiros</b>.<br><br>
+            Ative o radar magnético abaixo para guiar seus passos através da neblina.
         </div>
-        <button class="btn-gps" onclick="validarChegadaGPS(1, 2)">Confirmar Coordenadas da Missão</button>
-        <button class="btn-radar" onclick="iniciarBussola()">Ligar Radar Bússola</button>
+
+        <button class="btn-gps" onclick="validarChegadaGPS(1, 2)">🔍 RECOLHER EVIDÊNCIAS NO LOCAL</button>
+        <button class="btn-radar" onclick="iniciarBussola()">📡 ATIVAR AGULHA MAGNÉTICA</button>
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
         <div class="contador-distancia">Distância Restante:<br><span class="metros-valor">--</span> metros</div>
-        <button class="btn-gmaps" onclick="abrirGoogleMaps()">Ver Rota no Google Maps</button>
+        <button class="btn-gmaps" onclick="abrirGoogleMaps()">🗺️ ACESSAR MAPA DE SATÉLITE (BACKUP)</button>
+        
         <div class="area-secreta">
-            <input type="text" id="senha1" placeholder="Código">
-            <button onclick="forcarAvanco(1, 2)">Manual</button>
+            <input type="text" id="senha1" placeholder="[Frequência]">
+            <button onclick="forcarAvanco(1, 2)">Conexão Manual</button>
         </div>
     </div>
 
     <!-- TELA 2: MIRANTE DO RELÓGIO -->
     <div id="screen2" class="screen">
-        <h2>📍 Largo dos Padeiros</h2>
+        <h2>📍 ESTAÇÃO 1: LARGO DOS PADEIROS</h2>
+        <p>Você chegou ao coração da parte baixa. O cheiro do antigo carvão e a névoa cobrem as velhas construções de madeira. A equipe de investigação forense isolou o perímetro ao redor do Largo dos Padeiros. Examinando o chão úmido e os relatos das testemunhas locais, os peritos criminais conseguiram traçar os primeiros dados geográficos infalíveis.</p>
+        
         <div class="pista-box">
-            <strong>Pistas Descobertas:</strong><br><br>
-            1. A perícia confirmou que a Vítima foi deixada no quadrado <b>C6</b>.<br><br>
-            2. Ninguém pisou nas <b>Linhas 1, 2 e 3</b>.
+            <strong>📁 RELATÓRIO FORENSE - ARQUIVO #01</strong><br><br>
+            📜 <b>Evidência 1:</b> A perícia técnica confirmou, através de vestígios deixados no local, que a Vítima foi vista e deixada exatamente no quadrado <b>C6</b> do seu mapa.<br><br>
+            📜 <b>Evidência 2:</b> O padrão de pegadas ao redor do largo prova que absolutamente ninguém pisou ou passou pelas <b>Linhas 1, 2 e 3</b> do tabuleiro de investigação.<br><br>
+            📑 <i>Sublinhe ou risque essas áreas agora na sua prancheta física para estreitar o cerco contra o culpado.</i>
         </div>
+
         <div class="objetivo-box">
-            <b>📍 Próximo Passo:</b><br>
-            Alguém viu o roubo lá do alto. Procure o <b>Mirante para a Torre do Relógio</b>.
+            <b>📍 PRÓXIMO PASSO: OBTER O HORÁRIO DO CRIME</b><br><br>
+            Uma testemunha crucial foi avistada no ponto mais alto da vila. Alguém que controla o tempo observou uma movimentação estranha na neblina.<br><br>
+            Suba em direção ao ponto de observação e localize o <b>Mirante para a Torre do Relógio</b>. Ajuste seus instrumentos abaixo para guiar sua subida.
         </div>
-        <button class="btn-gps" onclick="validarChegadaGPS(2, 3)">Confirmar Coordenadas da Missão</button>
-        <button class="btn-radar" onclick="iniciarBussola()">Ligar Radar Bússola</button>
+
+        <button class="btn-gps" onclick="validarChegadaGPS(2, 3)">🔍 COLETAR DEPOIMENTO NO MIRANTE</button>
+        <button class="btn-radar" onclick="iniciarBussola()">📡 ATIVAR AGULHA MAGNÉTICA</button>
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
         <div class="contador-distancia">Distância Restante:<br><span class="metros-valor">--</span> metros</div>
-        <button class="btn-gmaps" onclick="abrirGoogleMaps()">Ver Rota no Google Maps</button>
+        <button class="btn-gmaps" onclick="abrirGoogleMaps()">🗺️ ACESSAR MAPA DE SATÉLITE (BACKUP)</button>
+        
         <div class="area-secreta">
-            <input type="text" id="senha2" placeholder="Código">
-            <button onclick="forcarAvanco(2, 3)">Manual</button>
+            <input type="text" id="senha2" placeholder="[Frequência]">
+            <button onclick="forcarAvanco(2, 3)">Conexão Manual</button>
         </div>
     </div>
 
     <!-- TELA 3: CEMITÉRIO -->
     <div id="screen3" class="screen">
-        <h2>🕰️ Mirante do Relógio</h2>
-        <p>Você encontrou o Relojoeiro! Ele estava ajustando os ponteiros quando escutou passos.</p>
+        <h2>🕰️ ESTAÇÃO 2: MIRANTE DO RELÓGIO</h2>
+        <p>A neblina se afasta por um instante, revelando a silhueta imponente da Torre do Relógio do outro lado dos trilhos. No final da estradinha, você encontra uma figura misteriosa com ferramentas de precisão nas mãos: é o Relojoeiro da vila. Ajustando os ponteiros do seu relógio de bolso, ele confessa que ouviu passos apressados ecoando na madeira da estação e aceita colaborar.</p>
+        
         <div class="pista-box">
-            <strong>Pistas Descobertas:</strong><br><br>
-            1. O Relojoeiro confirma que estava no quadrado <b>A5</b>.<br><br>
-            2. Ele viu que as <b>Linhas 9 e 10</b> estão vazias.
+            <strong>📝 DEPOIMENTO OFICIAL - CASO #1307</strong><br><br>
+            🕵️‍♂️ <b>Posição do Relojoeiro:</b> O Relojoeiro jura por sua profissão que permaneceu o tempo todo trabalhando no quadrado <b>A5</b> do mapa.<br><br>
+            👁️ <b>Testemunha Ocular:</b> Lá do alto de sua torre, ele garante que a parte baixa do vale estava em completo silêncio. Ele jura que as <b>Linhas 9 e 10</b> estão vazias.<br><br>
+            📑 <b>Instruções Lógicas:</b><br>
+            <i>1. Fixe o Relojoeiro na coordenada <b>A5</b>.</i><br>
+            <i>2. Como ele está ali, use a regra de exclusão e <b>risque inteiramente a Linha A e a Coluna 5</b>. Ninguém mais pode ocupar esses espaços.</i><br>
+            <i>3. Passe o risco definitivo também nas <b>Linhas 9 e 10</b> que estão vazias.</i>
         </div>
+
         <div class="objetivo-box">
-            <b>📍 Próximo Passo:</b><br>
-            Desça a rua, passe pela igreja e use o radar para encontrar o <b>Cemitério de Paranapiacaba</b>.
+            <b>📍 PRÓXIMO PASSO: BUSCAR RESPOSTAS NO ALÉM</b><br><br>
+            O Relojoeiro aponta com sua lanterna para o ponto mais isolado e silencioso do vale. Ele jura ter visto uma sombra deslizando entre os jazigos históricos da vila.<br><br>
+            Siga as ruas de paralelepípedo, passe pela antiga igreja e adentre o <b>Cemitério de Paranapiacaba</b>. Recalibre sua agulha magnética abaixo para caminhar entre as névoas.
         </div>
-        <button class="btn-gps" onclick="validarChegadaGPS(3, 4)">Confirmar Coordenadas da Missão</button>
-        <button class="btn-radar" onclick="iniciarBussola()">Ligar Radar Bússola</button>
+
+        <button class="btn-gps" onclick="validarChegadaGPS(3, 4)">🔍 INVESTIGAR PERÍMETRO DO CEMITÉRIO</button>
+        <button class="btn-radar" onclick="iniciarBussola()">📡 ATIVAR AGULHA MAGNÉTICA</button>
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
         <div class="contador-distancia">Distância Restante:<br><span class="metros-valor">--</span> metros</div>
-        <button class="btn-gmaps" onclick="abrirGoogleMaps()">Ver Rota no Google Maps</button>
+        <button class="btn-gmaps" onclick="abrirGoogleMaps()">🗺️ ACESSAR MAPA DE SATÉLITE (BACKUP)</button>
+        
         <div class="area-secreta">
-            <input type="text" id="senha3" placeholder="Código">
-            <button onclick="forcarAvanco(3, 4)">Manual</button>
+            <input type="text" id="senha3" placeholder="[Frequência]">
+            <button onclick="forcarAvanco(3, 4)">Conexão Manual</button>
         </div>
     </div>
 
     <!-- TELA 4: MUSEU CASTELINHO -->
     <div id="screen4" class="screen">
-        <h2>🪦 Cemitério de Paranapiacaba</h2>
-        <p>Um arrepio sobe pela espinha. Entre as antigas lápides, surge o Fantasma da vila!</p>
+        <h2>🪦 ESTAÇÃO 3: CEMITÉRIO DE PARANAPIACABA</h2>
+        <p>O silêncio aqui é absoluto. Entre as lápides antigas cobertas pelo musgo e os ornamentos de ferro fundido trazidos pelos ingleses, a temperatura parece cair de repente. A neblina se condensa à sua frente e assume uma forma humana. Não há o que temer, Detetive. É apenas o Fantasma residente da vila, resolvendo sussurrar um segredo.</p>
+        
         <div class="pista-box">
-            <strong>Pistas Descobertas:</strong><br><br>
-            1. O Fantasma confessa que está preso eternamente no quadrado <b>B8</b>.
+            <strong>👻 REVELAÇÃO ESPIRITUAL - CASO #1307</strong><br><br>
+            🕵️‍♂️ <b>Posição do Fantasma:</b> Com uma voz ecoando entre os túmulos, o Fantasma confessa que está condenado a vagar eternamente preso ao quadrado <b>B8</b> do mapa, jurando não ter saído do seu jazigo.<br><br>
+            📑 <b>Instruções Lógicas:</b><br>
+            <i>1. Fixe o Fantasma na coordenada <b>B8</b> do seu mapa.</i><br>
+            <i>2. Pela regra de eliminação, como ele ocupa esse ponto, pegue a caneta e <b>risque inteiramente toda a Linha B e toda a Coluna 8</b> do seu tabuleiro físico.</i>
         </div>
+
         <div class="objetivo-box">
-            <b>📍 Próximo Passo:</b><br>
-            O Fantasma diz que o antigo dono sabe de tudo. Suba a colina até o <b>Museu Castelinho</b>.
+            <b>📍 PRÓXIMO PASSO: INTERROGAR O ANTIGO ENGENHEIRO-CHEFE</b><br><br>
+            Com um sopro gelado, a aparição aponta para o topo da colina íngreme que vigia toda a vila. Lá em cima está o casarão vitoriano de onde o Barão comandava a ferrovia.<br><br>
+            Suba os degraus da colina e dirija-se ao <b>Museu Castelinho</b>. Reative seus sensores magnéticos abaixo para guiar sua subida.
         </div>
-        <button class="btn-gps" onclick="validarChegadaGPS(4, 5)">Confirmar Coordenadas da Missão</button>
-        <button class="btn-radar" onclick="iniciarBussola()">Ligar Radar Bússola</button>
+
+        <button class="btn-gps" onclick="validarChegadaGPS(4, 5)">🔍 ESCANEAR PERÍMETRO DO CASTELINHO</button>
+        <button class="btn-radar" onclick="iniciarBussola()">📡 ATIVAR AGULHA MAGNÉTICA</button>
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
         <div class="contador-distancia">Distância Restante:<br><span class="metros-valor">--</span> metros</div>
-        <button class="btn-gmaps" onclick="abrirGoogleMaps()">Ver Rota no Google Maps</button>
+        <button class="btn-gmaps" onclick="abrirGoogleMaps()">🗺️ ACESSAR MAPA DE SATÉLITE (BACKUP)</button>
+        
         <div class="area-secreta">
-            <input type="text" id="senha4" placeholder="Código">
-            <button onclick="forcarAvanco(4, 5)">Manual</button>
+            <input type="text" id="senha4" placeholder="[Frequência]">
+            <button onclick="forcarAvanco(4, 5)">Conexão Manual</button>
         </div>
     </div>
 
     <!-- TELA 5: CACHOEIRA -->
     <div id="screen5" class="screen">
-        <h2>🏰 Museu Castelinho</h2>
-        <p>O espírito do engenheiro-chefe te aguarda com a última peça do quebra-cabeça.</p>
+        <h2>🏰 ESTAÇÃO 4: MUSEU CASTELINHO</h2>
+        <p>Você venceu a subida íngreme e se encontra diante do Castelinho. Com suas paredes de madeira avermelhada e estilo tipicamente vitoriano, a antiga residência domina o topo da colina. Ao entrar no escritório principal, o ambiente exala história. Sentado à imponente escrivaninha de carvalho, o espírito do próprio Barão aguarda sua chegada para ditar a última peça do enigma.</p>
+        
         <div class="pista-box">
-            <strong>Pistas Descobertas:</strong><br><br>
-            1. O Barão vigia tudo de sua mesa no quadrado <b>D4</b>.
+            <strong>📜 VEREDITO FINAL DA FERROVIA - CASO #1307</strong><br><br>
+            🕵️‍♂️ <b>Posição do Barão:</b> O Barão declara que supervisionou a vila sem sair da sua mesa oficial, localizada exatamente no quadrado <b>D4</b> do mapa.<br><br>
+            📑 <b>Instruções Lógicas:</b><br>
+            <i>1. Fixe o Barão na coordenada <b>D4</b> da sua tabela.</i><br>
+            <i>2. Como o Barão ocupa esta posição, <b>risque e elimine toda a Linha D e toda a Coluna 4</b> por completo.</i><br><br>
+            🔍 <b>A Grande Dedução:</b> Detetive, a investigação está concluída! Olhe agora para a sua prancheta física. Se você cruzou todos os depoimentos corretamente — eliminando as linhas vazias e riscando as colunas e linhas bloqueadas por cada personagem que encontrou —, <b>restará apenas um único quadrado em branco em todo o mapa</b>. Esse quadrado vazio é o esconderijo exato do Ladrão!
         </div>
-        <p><b>A Grande Dedução:</b> Detetive, olhe para o seu mapa! Se você seguiu as pistas e riscou o papel corretamente, sobrou apenas UM quadrado em branco no mapa inteiro. Aquele é o esconderijo do Ladrão!</p>
+
         <div class="objetivo-box">
-            <b>📍 Passo Final:</b><br>
-            O Ladrão está encurralado. Vá imediatamente para a <b>Casa Zen / Cachoeira</b>!
+            <b>📍 PASSO FINAL: ENCURRALAR O LADRÃO NO ESCONDERIJO</b><br><br>
+            O mapa não mente. O cruzamento das suas pistas aponta perfeitamente para o paradeiro do suspeito. Ele está escondido onde a civilização termina e a natureza sussurra.<br><br>
+            Deixe o Castelinho, siga o som das águas e corra imediatamente para a <b>Casa Zen / Cachoeira Secreta</b>. Alinhe seus sensores magnéticos pela última vez abaixo e vá prender quem roubou o meu coração!
         </div>
-        <button class="btn-gps" onclick="validarChegadaGPS(5, 6)">Confirmar Coordenadas da Missão</button>
-        <button class="btn-radar" onclick="iniciarBussola()">Ligar Radar Bússola</button>
+
+        <button class="btn-gps" onclick="validarChegadaGPS(5, 6)">🔍 EFETUAR PRISÃO NA CACHOEIRA</button>
+        <button class="btn-radar" onclick="iniciarBussola()">📡 ATIVAR AGULHA MAGNÉTICA</button>
         <div class="bussola-container"><div class="seta-bussola">⬆️</div></div>
         <div class="contador-distancia">Distância Restante:<br><span class="metros-valor">--</span> metros</div>
-        <button class="btn-gmaps" onclick="abrirGoogleMaps()">Ver Rota no Google Maps</button>
+        <button class="btn-gmaps" onclick="abrirGoogleMaps()">🗺️ ACESSAR MAPA DE SATÉLITE (BACKUP)</button>
+        
         <div class="area-secreta">
-            <input type="text" id="senha5" placeholder="Código">
-            <button onclick="forcarAvanco(5, 6)">Manual</button>
+            <input type="text" id="senha5" placeholder="[Frequência]">
+            <button onclick="forcarAvanco(5, 6)">Conexão Manual</button>
         </div>
     </div>
 
     <!-- TELA 6: FINAL -->
     <div id="screen6" class="screen">
-        <h2>💖 Caso Encerrado!</h2>
-        <p>O mapa apontou perfeitamente para o quadrado <b>E7</b>.</p>
-        <p>Você solucionou o mistério! Olhe para o lado, porque o verdadeiro ladrão do seu coração é aquele que preparou este jogo para você.</p>
-        <h3 style="color: #ff4d4d; font-size: 24px;">Feliz Aniversário de Namoro!</h3>
+        <h2>💖 CASO ENCERRADO: O VERDADEIRO LADRÃO</h2>
+        <p>Parabéns, Detetive! O som das águas da cachoeira ecoa entre as árvores e o seu mapa não deixou margem para erros: o cruzamento implacável de todas as pistas e eliminações apontou com precisão cirúrgica para o quadrado <b>E7</b>.</p>
+        <p>Você seguiu os sinais através da neblina de Paranapiacaba, desvendou o enigma lógico e encurralou o suspeito no esconderijo final. A caçada terminou, mas a maior revelação do caso acaba de acontecer bem diante dos seus olhos...</p>
+        <p>O verdadeiro culpado por roubar o seu coração não é nenhum fantasma, relojoeiro ou barão do passado. <b>O ladrão do seu coração está bem à sua frente neste exato segundo</b>.</p>
+        <p>Olhe para ele agora mesmo, efetue a prisão e exija imediatamente o resgate do artefato que foi roubado!</p>
+        <p>Que sorte a dele ter sido pego pela detetive mais incrível do mundo. Que a nossa vida continue sendo a melhor aventura de todas, cheia de mistérios para desvendar lado a lado.</p>
+        <h2 style="color: #ff4d4d; font-size: 26px; text-shadow: 0 0 10px rgba(255,77,77,0.5);">Feliz Aniversário de Namoro! 💘</h2>
     </div>
 
     <script>
         // ==========================================
-        // 1. DATA ALVO E COORDENADAS (Modo blindado contra falhas)
-        // Ano 2026, Mês 6 (Julho é índice 6 no JavaScript), Dia 13, 00h:00m:00s
+        // 1. DATA ALVO E COORDENADAS DO JOGO
+        // Ano 2026, Mês 6 (Julho = índice 6), Dia 13, 00:00:00
         // ==========================================
-        
         const DATA_ALVO = new Date(2026, 6, 13, 0, 0, 0).getTime();
         let tempoLiberado = false;
 
         const TARGET_ESTACIONAMENTO = { lat: -23.779180, lng: -46.305736, raio: 80 }; 
         const LOCAIS = {
-            99: { lat: -23.632528, lng: -46.572000, raio: 50 }, 
-            1: { lat: -23.778778, lng: -46.302278, raio: 50 }, 
-            2: { lat: -23.777083, lng: -46.304194, raio: 50 }, 
-            3: { lat: -23.778500, lng: -46.304833, raio: 50 }, 
-            4: { lat: -23.778194, lng: -46.300750, raio: 50 }, 
-            5: { lat: -23.780306, lng: -46.301778, raio: 65 }, 
+            99: { lat: -23.632528, lng: -46.572000, raio: 50 }, // Parque São Caetano
+            1: { lat: -23.778778, lng: -46.302278, raio: 50 },  // Largo dos Padeiros
+            2: { lat: -23.777083, lng: -46.304194, raio: 50 },  // Mirante
+            3: { lat: -23.778500, lng: -46.304833, raio: 50 },  // Cemitério
+            4: { lat: -23.778194, lng: -46.300750, raio: 50 },  // Castelinho
+            5: { lat: -23.780306, lng: -46.301778, raio: 65 },  // Cachoeira
             0: TARGET_ESTACIONAMENTO
         };
 
@@ -279,25 +320,20 @@
         setInterval(atualizarTimer, 1000);
 
         function atualizarTimer() {
-            if (tempoLiberado) return; // Se já abriu (ou usamos a senha 'tempo'), não recalcula
+            if (tempoLiberado) return; 
             
             let agora = new Date().getTime();
             let distanciaTempo = DATA_ALVO - agora;
 
             if (distanciaTempo > 0) {
-                // Matemática segura para o contador global de horas
                 let horas = Math.floor(distanciaTempo / (1000 * 60 * 60));
                 let minutos = Math.floor((distanciaTempo % (1000 * 60 * 60)) / (1000 * 60));
                 let segundos = Math.floor((distanciaTempo % (1000 * 60)) / 1000);
 
-                // PadStart garante que os minutos e segundos sempre tenham dois dígitos (ex: 05)
                 document.getElementById("timer-regressivo").innerText = 
                     String(horas).padStart(2, '0') + ":" + 
                     String(minutos).padStart(2, '0') + ":" + 
                     String(segundos).padStart(2, '0');
-
-                document.getElementById("status-gps").innerText = "Aguardando Liberação Temporal...";
-                document.getElementById('status-gps').style.color = "#ff4d4d";
             } else {
                 liberarRelogio();
             }
@@ -310,11 +346,7 @@
             document.getElementById("titulo-timer").style.color = "#4CAF50";
             document.getElementById("contador-container").classList.add("tempo-liberado");
             
-            // O Relógio zerou! A mensagem muda avisando que agora precisa ir pro local
-            document.getElementById("status-gps").innerText = "Aguardando Localização Geográfica...";
-            document.getElementById('status-gps').style.color = "#ff4d4d";
-            
-            // Força a validação imediata do GPS agora que o tempo deixou
+            document.getElementById("status-gps").innerText = "📡 RADAR BUSCANDO SINAL: Dirija-se ao Estacionamento de Paranapiacaba.";
             verificarCadeadoEstacionamento();
         }
 
@@ -351,7 +383,6 @@
 
         function verificarCadeadoEstacionamento() {
             if (document.getElementById('screen0').style.display !== "none") {
-                // SÓ TESTA O GPS SE O RELÓGIO JÁ ZEROU (tempoLiberado = true)
                 if(!tempoLiberado) return; 
 
                 let distEst = calcularDistancia(latAtual, lngAtual, TARGET_ESTACIONAMENTO.lat, TARGET_ESTACIONAMENTO.lng);
@@ -360,13 +391,13 @@
                     document.getElementById('icone-cadeado').innerText = "🔓";
                     document.getElementById('icone-cadeado').className = "cadeado-aberto";
                     let status = document.getElementById('status-gps');
-                    status.innerText = "Sinal Confirmado! Acesso Liberado.";
+                    status.innerText = "🔓 CONEXÃO ESTABELECIDA. O mistério espera por você na vila de névoa.";
                     status.style.color = "#4CAF50";
                     document.getElementById('btn-iniciar').disabled = false;
                 } else {
                     document.getElementById('icone-cadeado').innerText = "🔒";
                     document.getElementById('icone-cadeado').className = "cadeado-fechado";
-                    document.getElementById('status-gps').innerText = "Aguardando Localização Geográfica...";
+                    document.getElementById('status-gps').innerText = "📡 RADAR BUSCANDO SINAL: Dirija-se ao Estacionamento de Paranapiacaba.";
                     document.getElementById('status-gps').style.color = "#ff4d4d";
                     document.getElementById('btn-iniciar').disabled = true;
                 }
@@ -393,10 +424,10 @@
         }
 
         // ==========================================
-        // 4. BÚSSOLA ABSOLUTA
+        // 4. BÚSSOLA ABSOLUTA (CORRIGIDA)
         // ==========================================
         let bussolaAtiva = false;
-        let rotacaoCSS = 0; 
+        let rotationsCSS = 0; 
         
         function iniciarBussola() {
             if(bussolaAtiva) return; 
@@ -416,18 +447,18 @@
             let anguloDestino = calcularBearing(latAtual, lngAtual, targetBussola.lat, targetBussola.lng);
             let novaRotacao = anguloDestino - direcaoCelular;
 
-            let diferenca = novaRotacao - (rotacaoCSS % 360);
+            let diferenca = novaRotacao - (rotationsCSS % 360);
             if (diferenca > 180) diferenca -= 360;
             if (diferenca < -180) diferenca += 360;
-            rotacaoCSS += diferenca;
+            rotationsCSS += diferenca;
 
             document.querySelectorAll('.seta-bussola').forEach(seta => { 
-                seta.style.transform = `rotate(${rotacaoCSS}deg)`; 
+                seta.style.transform = `rotate(${rotationsCSS}deg)`; 
             });
         }
 
         // ==========================================
-        // 5. TRANSIÇÕES E FUNÇÕES DO MENU SECRETO
+        // 5. TRANSIÇÕES E FUNÇÕES DE BYPASS DO DESENVOLVEDOR
         // ==========================================
         function mudarTela(faseAtual, proximaFase) {
             document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
@@ -461,17 +492,13 @@
 
             let senhaDigitada = inputElement.value.trim().toLowerCase();
             
-            // --- SENHAS SECRETAS DO DESENVOLVEDOR ---
-            
-            // 1. Zera o relógio do tempo na hora para poder testar o GPS!
             if(senhaDigitada === "tempo") {
                 liberarRelogio();
                 inputElement.value = "";
-                alert("Viagem no tempo ativada! O relógio foi zerado e o sistema agora está procurando o GPS.");
+                alert("Viagem no tempo ativada! O relógio foi zerado e o sistema agora busca o GPS.");
                 return;
             }
 
-            // 2. Abre o painel verde
             if(senhaDigitada === "debug") {
                 let pnl = document.getElementById('debug-panel');
                 pnl.style.display = pnl.style.display === "block" ? "none" : "block";
@@ -479,7 +506,6 @@
                 return;
             }
 
-            // 3. Vai para o laboratório da bússola
             if(senhaDigitada === "debug2") {
                 document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
                 document.getElementById('screen-test').style.display = 'block';
@@ -489,7 +515,6 @@
                 return;
             }
 
-            // 4. Força pular de fase em caso de pane geral
             if (senhaDigitada === "teste") {
                 if (faseAtual === 'teste') { alert("Use o botão 'Voltar ao Jogo' abaixo."); return; }
                 mudarTela(faseAtual, proximaFase);
@@ -498,6 +523,9 @@
             }
         }
 
+        // ==========================================
+        // 6. MATEMÁTICA GEOGRÁFICA
+        // ==========================================
         function calcularDistancia(lat1, lon1, lat2, lon2) {
             const R = 6371e3; 
             const p1 = lat1 * Math.PI/180;
