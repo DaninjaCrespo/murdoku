@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca de Emoções - Arquivos Confidenciais</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1, h2 { color: #d4af37; }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #2a2a2a;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid #d4af37;
+        }
+        .box-bloqueio, .box-conteudo {
+            background-color: #111;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px dashed #ff4d4d;
+            margin: 20px 0;
+        }
+        .box-conteudo {
+            border-color: #4CAF50;
+            display: none;
+            text-align: justify;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        input[type="password"] {
+            width: 80%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #d4af37;
+            border-radius: 5px;
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        button {
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 85%;
+            margin-bottom: 10px;
+        }
+        .btn-desbloquear { background-color: #4CAF50; color: #fff; }
+        .btn-desbloquear:hover { background-color: #45a049; }
+        .btn-whatsapp { background-color: #25D366; color: #fff; }
+        .btn-whatsapp:hover { background-color: #128C7E; }
+        
+        .status-erro { color: #ff4d4d; font-weight: bold; margin-top: 10px; display: none; }
+        .badge-portal { background-color: #d4af37; color: #1a1a1a; padding: 5px 10px; font-weight: bold; border-radius: 3px; display: inline-block; margin-bottom: 15px; text-transform: uppercase;}
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>📜 BIBLIOTECA DE EMOÇÕES</h2>
+        <p><i>Arquivos Pessoais e Confidenciais de Investigação Coracional.</i></p>
+
+        <!-- AREA BLOQUEADA (APARECE DE INÍCIO) -->
+        <div id="area-bloqueada" class="box-bloqueio">
+            <span id="label-portal" class="badge-portal">Portal Detectado</span>
+            <p>Atenção, Detetive. O arquivo que você está tentando acessar está criptografado sob rígido protocolo emocional.</p>
+            <p>Para ler esta página do livro, <b>solicite a chave de acesso temporária</b> diretamente com o autor do caso.</p>
+            
+            <input type="password" id="campo-senha" placeholder="Insira a Chave Secreta"><br>
+            <button class="btn-desbloquear" onclick="validarSenhaPortal()">Desbloquear Arquivo</button>
+            <button class="btn-whatsapp" onclick="solicitarSenhaWhatsApp()">💬 Pedir Chave Secreta via WhatsApp</button>
+            
+            <div id="msg-erro" class="status-erro">⚠️ Chave incorreta. Frequência não autorizada.</div>
+        </div>
+
+        <!-- AREA DA CARTA (REVELADA APÓS A SENHA CORRETA) -->
+        <div id="area-carta" class="box-conteudo">
+            <h3 id="titulo-carta" style="color: #4CAF50; text-align: center; font-size: 20px;"></h3>
+            <hr style="border: 1px solid #4CAF50; margin-bottom: 20px;">
+            <p id="texto-carta"></p>
+        </div>
+    </div>
+
+    <script>
+        // SEU NÚMERO DE WHATSAPP (Coloque seu número completo com DDD, ex: "5511999999999")
+        const SEU_TELEFONE = "5511999999999"; 
+
+        // BANCO DE DADOS LOCAL DO SISTEMA (Senhas e Identificadores das 12 Cartas)
+        const PORTAIS = {
+            "triste":    { nome: "Quando você estiver triste", senha: "abraco" },
+            "feliz":     { nome: "Quando você estiver feliz", senha: "sorriso" },
+            "saudade":   { nome: "Quando você estiver com saudade", senha: "juntos" },
+            "briga":     { nome: "Quando estivermos brigados", senha: "paz" },
+            "desejo":    { nome: "Quando o desejo bater (Romantismo)", senha: "fogo" },
+            "tpm":       { nome: "Quando você estiver de TPM", senha: "doce" },
+            "partiu":    { nome: "Quando quiser sair / se divertir", senha: "partiu" },
+            "socorro":   { nome: "Quando precisar de ajuda (qualquer coisa)", senha: "socorro" },
+            "gula":      { nome: "Quando tiver um desejo de comida / fome", senha: "gula" },
+            "preguica":  { nome: "Quando quiser um Vale-Preguiça (Cinema/Maratona)", senha: "preguica" },
+            "rainha":    { nome: "Quando quiser um momento SPA / Beleza", senha: "rainha" },
+            "relaxar":   { nome: "Quando o dia tiver sido exaustivo / Estresse", senha: "relaxar" }
+        };
+
+        // TEXTOS PRELIMINARES DAS CARTAS (Serão expandidos e customizados por você)
+        const TEXTOS_CARTAS = {
+            "triste":    "Aqui vai o seu texto personalizado para quando ela estiver triste...",
+            "feliz":     "Aqui vai o seu texto personalizado para quando ela estiver feliz...",
+            "saudade":   "Aqui vai o seu texto personalizado para quando ela estiver com saudade...",
+            "briga":     "Aqui vai o seu texto personalizado para quando vocês estiverem brigados...",
+            "desejo":    "Aqui vai o seu texto personalizado para quando o desejo bater...",
+            "tpm":       "Aqui vai o seu texto personalizado para quando ela estiver de TPM...",
+            "partiu":    "Aqui vai o seu texto personalizado para quando ela quiser sair...",
+            "socorro":   "Aqui vai o seu texto personalizado para quando ela precisar de ajuda...",
+            "gula":      "Aqui vai o seu texto personalizado para quando ela tiver fome/desejo de doce ou comida...",
+            "preguica":  "Aqui vai o seu texto personalizado para o Vale-Preguiça de cinema...",
+            "rainha":    "Aqui vai o seu texto personalizado para o momento SPA / Salão de beleza...",
+            "relaxar":   "Aqui vai o seu texto personalizado para quando ela estiver exausta do dia..."
+        };
+
+        let portalAtual = "";
+
+        // Captura automática do parâmetro ?tipo= no link ao carregar a página
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tipoUrl = urlParams.get('tipo');
+
+            if (tipoUrl && PORTAIS[tipoUrl]) {
+                portalAtual = tipoUrl;
+                document.getElementById('label-portal').innerText = PORTAIS[portalAtual].nome;
+            } else {
+                document.getElementById('area-bloqueada').innerHTML = "<h3>⚠️ ERRO DE PROTOCOLO</h3><p>Nenhum portal válido foi detectado. Escaneie um QR Code presente nas páginas do livro físico.</p>";
+            }
+        };
+
+        // Envia mensagem formatada para o seu WhatsApp abrindo o chat automaticamente
+        function solicitarSenhaWhatsApp() {
+            if (!portalAtual) return;
+            let nomePortal = PORTAIS[portalAtual].nome;
+            let textoMensagem = encodeURIComponent(`Amor, estou no livro e preciso da chave secreta para o portal: "${nomePortal}". Pode me passar? 🔑`);
+            let urlWhats = `https://wa.me/${SEU_TELEFONE}?text=${textoMensagem}`;
+            window.open(urlWhats, '_blank');
+        }
+
+        // Valida a senha digitada contra o banco de dados local
+        function validarSenhaPortal() {
+            if (!portalAtual) return;
+            
+            let senhaDigitada = document.getElementById('campo-senha').value.trim().toLowerCase();
+            let senhaCorreta = PORTAIS[portalAtual].senha;
+
+            if (senhaDigitada === senhaCorreta) {
+                document.getElementById('msg-erro').style.display = "none";
+                document.getElementById('area-bloqueada').style.display = "none";
+                
+                // Configura e revela a carta secreta correspondente
+                document.getElementById('titulo-carta').innerText = PORTAIS[portalAtual].nome.toUpperCase();
+                document.getElementById('texto-carta').innerText = TEXTOS_CARTAS[portalAtual];
+                
+                let areaCarta = document.getElementById('area-carta');
+                areaCarta.style.display = "block";
+                window.scrollTo(0, 0);
+            } else {
+                document.getElementById('msg-erro').style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
