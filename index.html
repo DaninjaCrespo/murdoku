@@ -76,13 +76,29 @@
         /* Modulo de Câmera na Última Tela */
         .camera-container { margin-top: 20px; background: #111; padding: 15px; border: 1px dashed #d4af37; border-radius: 5px; }
         #video-camera { width: 100%; border: 2px solid #d4af37; border-radius: 5px; display: none; margin-bottom: 10px; }
-        #foto-resultado { width: 100%; display: none; border: 2px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.8); margin-bottom: 10px; border-radius: 5px; }
+        #foto-resultado { width: 100%; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.8); margin-bottom: 10px; border-radius: 2px; }
         .btn-camera { background-color: #ff4d4d; color: #fff; font-size: 18px; padding: 15px; }
         .btn-camera:hover { background-color: #cc0000; }
+        
+        /* Instrução de Salvar Chamativa */
+        #msg-salvar { 
+            display: none; 
+            font-size: 16px; 
+            font-weight: bold; 
+            color: #ffd700; 
+            text-transform: uppercase; 
+            background-color: #222; 
+            padding: 15px; 
+            border: 2px dashed #ffd700; 
+            border-radius: 5px; 
+            margin-top: 15px; 
+            letter-spacing: 1px; 
+        }
     </style>
 </head>
 <body>
 
+    <!-- PAINEL DE TESTES OCULTO -->
     <div id="debug-panel">
         <b>[MODO DESENVOLVEDOR]</b><br>
         Lat: <span id="dbg-lat">0</span><br>
@@ -91,6 +107,7 @@
         Distância Alvo: <span id="dbg-dist">0</span>m
     </div>
 
+    <!-- TELA SECRETA DE TESTE DE BÚSSOLA -->
     <div id="screen-test" class="screen">
         <h2>🛠️ TESTE DE CALIBRAGEM</h2>
         <select id="alvo-teste" class="dropdown-teste" onchange="mudarAlvoTeste()">
@@ -112,6 +129,7 @@
         <button class="btn-secundario" style="margin-top:20px; width:100%; padding: 15px;" onclick="sairTelaTeste()">Voltar ao Jogo</button>
     </div>
 
+    <!-- TELA 0: ESTACIONAMENTO E TIMER -->
     <div id="screen0" class="screen">
         <h2>OPERAÇÃO PARANAPIACABA - TERCEIRO ATO</h2>
         
@@ -134,6 +152,7 @@
         </div>
     </div>
 
+    <!-- TELA 1: LARGO DOS PADEIROS -->
     <div id="screen1" class="screen">
         <h2>📂 CASO #1307: O ROUBO DO SÉCULO</h2>
         <p>Atenção, Detetive. O alerta geral foi emitido pelas antigas cornetas da estação. O nevoeiro baixou repentinamente sobre a vila histórica e, sob o manto cinzento, um crime silencioso aconteceu: <b>o meu coração foi roubado</b>.</p>
@@ -157,6 +176,7 @@
         </div>
     </div>
 
+    <!-- TELA 2: MIRANTE DO RELÓGIO -->
     <div id="screen2" class="screen">
         <h2>📍 ESTAÇÃO 1: LARGO DOS PADEIROS</h2>
         <p>Você chegou ao coração da parte baixa. O cheiro do antigo carvão e a névoa cobrem as velhas construções de madeira. A equipe de investigação forense isolou o perímetro ao redor do Largo dos Padeiros. Examinando o chão úmido e os relatos das testemunhas locais, os peritos criminais conseguiram traçar os primeiros dados geográficos infalíveis.</p>
@@ -186,6 +206,7 @@
         </div>
     </div>
 
+    <!-- TELA 3: CEMITÉRIO -->
     <div id="screen3" class="screen">
         <h2>🕰️ ESTAÇÃO 2: MIRANTE DO RELÓGIO</h2>
         <p>A neblina se afasta por um instante, revelando a silhueta imponente da Torre do Relógio do outro lado dos trilhos. No final da estradinha, você encontra uma figura misteriosa com ferramentas de precisão nas mãos: é o Relojoeiro da vila. Ajustando os ponteiros do seu relógio de bolso, ele confessa que ouviu passos apressados ecoando na madeira da estação e aceita colaborar.</p>
@@ -218,6 +239,7 @@
         </div>
     </div>
 
+    <!-- TELA 4: MUSEU CASTELINHO -->
     <div id="screen4" class="screen">
         <h2>🪦 ESTAÇÃO 3: CEMITÉRIO DE PARANAPIACABA</h2>
         <p>O silêncio aqui é absoluto. Entre as lápides antigas cobertas pelo musgo e os ornamentos de ferro fundido trazidos pelos ingleses, a temperatura parece cair de repente. A neblina se condensa à sua frente e assume uma forma humana. Não há o que temer, Detetive. É apenas o Fantasma residente da vila, resolvendo sussurrar um segredo.</p>
@@ -248,6 +270,7 @@
         </div>
     </div>
 
+    <!-- TELA 5: CACHOEIRA -->
     <div id="screen5" class="screen">
         <h2>🏰 ESTAÇÃO 4: MUSEU CASTELINHO</h2>
         <p>Você venceu a subida íngreme e se encontra diante do Castelinho. Com suas paredes de madeira avermelhada e estilo tipicamente vitoriano, a antiga residência domina o topo da colina. Ao entrar no escritório principal, o ambiente exala história. Sentado à imponente escrivaninha de carvalho, o espírito do próprio Barão aguarda sua chegada para ditar a última peça do enigma.</p>
@@ -279,6 +302,7 @@
         </div>
     </div>
 
+    <!-- TELA 6: FINAL E CÂMERA -->
     <div id="screen6" class="screen">
         <h2>💖 CASO ENCERRADO: O VERDADEIRO LADRÃO</h2>
         <p>Parabéns, Detetive! O som das águas da cachoeira ecoa entre as árvores e o seu mapa não deixou margem para erros: o cruzamento implacável de todas as pistas e eliminações apontou com precisão cirúrgica para o quadrado <b>E7</b>.</p>
@@ -286,6 +310,7 @@
         <p>O verdadeiro culpado por roubar o seu coração não é nenhum fantasma, relojoeiro ou barão do passado. <b>O ladrão do seu coração está bem à sua frente neste exato segundo</b>.</p>
         <p>Olhe para ele agora mesmo, efetue a prisão e exija imediatamente o resgate do artefato que foi roubado!</p>
         
+        <!-- Módulo de Câmera do Flagrante -->
         <div class="camera-container">
             <h3 style="color: #ff4d4d; margin-top: 0;">📸 REGISTRAR O FLAGRANTE</h3>
             <p style="font-size: 14px;">A perícia exige uma foto oficial com o suspeito. Mantenha este registro guardado: <b>a chave que destranca o resgate físico está escondida na própria evidência.</b></p>
@@ -297,11 +322,17 @@
             <canvas id="canvas-foto" style="display: none;"></canvas>
             <img id="foto-resultado" alt="Sua Foto Oficial">
             
-            <p id="msg-salvar" style="display: none; font-size: 12px; color: #888;">(Pressione e segure a foto para salvar na galeria)</p>
+            <p id="msg-salvar">⚠️ Pressione e segure a foto para salvar na galeria ⚠️</p>
         </div>
 
-        <p>Que sorte a dele ter sido pego pela detetive mais incrível do mundo. Que a nossa vida continue sendo a melhor aventura de todas, cheia de mistérios para desvendar lado a lado.</p>
-        <h2 style="color: #ff4d4d; font-size: 26px; text-shadow: 0 0 10px rgba(255,77,77,0.5);">Feliz Bodas de Cristal! 💘</h2>
+        <p>Que sorte a dele ter sido pego pela detetive mais incrível do mundo.</p>
+        
+        <!-- Mensagem de Celebração de 3 Anos -->
+        <h2 style="color: #d4af37; font-size: 22px; text-shadow: 0 0 10px rgba(212,175,55,0.5); line-height: 1.5; margin-top: 30px;">
+            A nossa história é a minha aventura favorita.<br>
+            Um brinde aos nossos 3 anos juntos,<br>
+            e a todos os mistérios que ainda vamos desvendar.
+        </h2>
     </div>
 
     <script>
@@ -420,7 +451,7 @@
 
         function abrirGoogleMaps() {
             if(!targetBussola) return;
-            let url = `https://www.google.com/maps/dir/?api=1&destination=$${targetBussola.lat},${targetBussola.lng}&travelmode=walking`;
+            let url = `https://www.google.com/maps/dir/?api=1&destination=${targetBussola.lat},${targetBussola.lng}&travelmode=walking`;
             window.open(url, '_blank');
         }
 
@@ -559,7 +590,7 @@
         }
 
         // ==========================================
-        // 7. MÓDULO DE CÂMERA E MARCA D'ÁGUA
+        // 7. MÓDULO DE CÂMERA E EFEITO POLAROID CONFIDENCIAL
         // ==========================================
         let streamCamera = null;
 
@@ -568,7 +599,6 @@
             const btnAbrir = document.getElementById('btn-abrir-camera');
             const btnCapturar = document.getElementById('btn-capturar');
 
-            // Solicita acesso à câmera frontal do dispositivo
             navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false })
                 .then(function(stream) {
                     streamCamera = stream;
@@ -578,7 +608,7 @@
                     btnCapturar.style.display = 'block';
                 })
                 .catch(function(err) {
-                    alert("Atenção, Detetive: O acesso à câmera foi negado ou não está disponível.");
+                    alert("Atenção, Detetive: O acesso à câmera foi negado ou não está disponível no seu aparelho.");
                 });
         }
 
@@ -590,35 +620,53 @@
             const btnCapturar = document.getElementById('btn-capturar');
             const msgSalvar = document.getElementById('msg-salvar');
 
-            // Ajusta o tamanho da imagem gerada de acordo com o vídeo real do celular
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
+            // Dimensões da borda da Polaroid
+            const borda = 20;
+            const bordaInferior = 80;
+            
+            // Ajusta o tamanho da foto final para englobar as bordas
+            canvas.width = video.videoWidth + (borda * 2);
+            canvas.height = video.videoHeight + borda + bordaInferior;
 
-            // Tira a foto jogando o vídeo no canvas
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            // 1. Pinta o fundo de branco envelhecido (Moldura da Polaroid)
+            ctx.fillStyle = "#f4f4ec";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Adiciona a tarja semi-transparente no rodapé para destacar os textos
-            ctx.fillStyle = "rgba(0, 0, 0, 0.6)"; 
-            ctx.fillRect(0, canvas.height - 60, canvas.width, 60);
+            // 2. Aplica Filtro Vintage (Sépia/Contraste) e desenha o vídeo
+            ctx.filter = 'sepia(0.6) contrast(1.2) brightness(0.9)';
+            ctx.drawImage(video, borda, borda, video.videoWidth, video.videoHeight);
+            ctx.filter = 'none'; // Desliga o filtro para o restante
 
-            // Adiciona o selo de ARQUIVO CONFIDENCIAL à esquerda
-            ctx.font = "bold 20px Courier New";
-            ctx.fillStyle = "#d4af37";
+            // 3. Efeito de riscos de "foto antiga guardada na gaveta" sobre a imagem
+            ctx.strokeStyle = "rgba(0,0,0,0.15)";
+            ctx.lineWidth = 1;
+            for(let i=0; i<15; i++){
+                ctx.beginPath();
+                let x = borda + Math.random() * video.videoWidth;
+                let y = borda + Math.random() * video.videoHeight;
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + (Math.random() * 40 - 20), y + (Math.random() * 100 - 50));
+                ctx.stroke();
+            }
+
+            // 4. Inscrições no rodapé da Polaroid
+            ctx.font = "bold 24px 'Courier New', monospace";
+            ctx.fillStyle = "#2a2a2a"; // Tinta preta estilo carimbo
+            
+            // Texto da Esquerda (A Senha do Cadeado)
             ctx.textAlign = "left";
-            ctx.fillText("ARQUIVO: CONFIDENCIAL", 15, canvas.height - 22);
+            ctx.fillText("ARQUIVO 137: CONFIDENCIAL", borda + 5, canvas.height - 30);
 
-            // Adiciona a senha/data secreta à direita em vermelho tipo digital
-            ctx.font = "bold 32px Courier New";
-            ctx.fillStyle = "#ff4d4d"; 
+            // Texto da Direita (Ano)
             ctx.textAlign = "right";
-            ctx.fillText("13/07", canvas.width - 15, canvas.height - 18);
+            ctx.fillText("2026", canvas.width - borda - 5, canvas.height - 30);
 
-            // Converte a arte final gerada em uma imagem PNG para ser mostrada na tela
-            fotoImg.src = canvas.toDataURL('image/png');
+            // 5. Converte a arte final gerada em uma imagem .jpg
+            fotoImg.src = canvas.toDataURL('image/jpeg', 0.95);
             fotoImg.style.display = 'block';
             msgSalvar.style.display = 'block';
 
-            // Desliga o visor e a câmera nativa do celular para não gastar bateria
+            // Desliga visor e a câmera
             video.style.display = 'none';
             btnCapturar.style.display = 'none';
             if(streamCamera) {
