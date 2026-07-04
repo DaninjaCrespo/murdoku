@@ -54,7 +54,6 @@
         .objetivo-box { background-color: #1f1f1f; padding: 15px; border: 1px dashed #d4af37; margin: 20px 0; color: #fff; }
         
         button { border: none; padding: 12px 25px; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.3s; width: 100%; margin-bottom: 10px; }
-        button:disabled { background-color: #555 !important; color: #888 !important; cursor: not-allowed; }
         .btn-principal { background-color: #d4af37; color: #1a1a1a; }
         .btn-principal:hover { background-color: #b5952f; }
         .btn-gps { background-color: #4CAF50; color: #fff; padding: 15px; font-size: 18px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
@@ -144,7 +143,8 @@
         
         <p>Detetive, uma frequência misteriosa foi interceptada nos antigos trilhos da São Paulo Railway em Paranapiacaba. Os arquivos indicam que um artefato de valor inestimável — o meu coração — foi levado da vila. O relógio acima marca o tempo necessário para que as correntes magnéticas se alinhem. Quando o contador zerar, o radar será ativado. Sua missão começará no instante em que você pisar em solo histórico da parte alta da Vila.</p>
         
-        <button id="btn-iniciar" class="btn-principal" onclick="mudarTela(0, 1)" disabled>Iniciar Investigação</button>
+        <!-- Botão modificado para mostrar erro caso tente clicar fora do local -->
+        <button id="btn-iniciar" class="btn-principal" onclick="tentarIniciar()">Iniciar Investigação</button>
 
         <div class="area-secreta">
             <input type="text" id="senha0" placeholder="[Frequência]">
@@ -176,16 +176,17 @@
         </div>
     </div>
 
-    <!-- TELA 2: MIRANTE DO RELÓGIO -->
+    <!-- TELA 2: MIRANTE DO RELÓGIO (Novo Texto de Instrução Lógica) -->
     <div id="screen2" class="screen">
         <h2>📍 ESTAÇÃO 1: LARGO DOS PADEIROS</h2>
         <p>Você chegou ao coração da parte baixa. O cheiro do antigo carvão e a névoa cobrem as velhas construções de madeira. A equipe de investigação forense isolou o perímetro ao redor do Largo dos Padeiros. Examinando o chão úmido e os relatos das testemunhas locais, os peritos criminais conseguiram traçar os primeiros dados geográficos infalíveis.</p>
         
         <div class="pista-box">
             <strong>📁 RELATÓRIO FORENSE - ARQUIVO #01</strong><br><br>
-            📜 <b>Evidência 1:</b> A perícia técnica confirmou, através de vestígios deixados no local, que a Vítima foi vista e deixada exatamente no quadrado <b>C6</b> do seu mapa.<br><br>
-            📜 <b>Evidência 2:</b> O padrão de pegadas ao redor do largo prova que absolutamente ninguém pisou ou passou pelas <b>Linhas 1, 2 e 3</b> do tabuleiro de investigação.<br><br>
-            📑 <i>Sublinhe ou risque essas áreas agora na sua prancheta física para estreitar o cerco contra o culpado.</i>
+            🕵️‍♂️ <b>Ponto de Partida:</b> A perícia isolou a área central. Localize o desenho do <b>Coração</b> no seu mapa.<br><br>
+            📑 <b>Instruções Lógicas:</b><br>
+            <i>1. A partir de onde está o Coração, pegue sua caneta e <b>risque toda a coluna, toda a linha horizontal e as diagonais</b> partindo dele. O ladrão não fugiu por essas rotas.</i><br>
+            <i>2. O padrão de pegadas confirma que o suspeito não foi para o norte. Portanto, <b>risque também as Linhas 1, 2 e 3 inteiras</b> do seu tabuleiro físico.</i>
         </div>
 
         <div class="objetivo-box">
@@ -436,14 +437,25 @@
                     let status = document.getElementById('status-gps');
                     status.innerText = "🔓 CONEXÃO ESTABELECIDA. O mistério espera por você na vila de névoa.";
                     status.style.color = "#4CAF50";
-                    document.getElementById('btn-iniciar').disabled = false;
                 } else {
                     document.getElementById('icone-cadeado').innerText = "🔒";
                     document.getElementById('icone-cadeado').className = "cadeado-fechado";
                     document.getElementById('status-gps').innerText = "📡 RADAR BUSCANDO SINAL: Dirija-se ao Estacionamento de Paranapiacaba.";
                     document.getElementById('status-gps').style.color = "#ff4d4d";
-                    document.getElementById('btn-iniciar').disabled = true;
                 }
+            }
+        }
+
+        function tentarIniciar() {
+            if (!tempoLiberado) {
+                alert("ACESSO NEGADO: O protocolo cronológico ainda não foi concluído. Aguarde a data/hora exata.");
+                return;
+            }
+            let distEst = calcularDistancia(latAtual, lngAtual, TARGET_ESTACIONAMENTO.lat, TARGET_ESTACIONAMENTO.lng);
+            if (distEst <= TARGET_ESTACIONAMENTO.raio) {
+                mudarTela(0, 1);
+            } else {
+                alert(`ACESSO NEGADO: Frequência muito fraca. Você está a ${Math.round(distEst)} metros. É obrigatório estar no local exato (Estacionamento de Paranapiacaba) para liberar a investigação.`);
             }
         }
 
@@ -535,20 +547,19 @@
 
             let senhaDigitada = inputElement.value.trim().toLowerCase();
             
+            // Comandos de desenvolvedor
             if(senhaDigitada === "tempo") {
                 liberarRelogio();
                 inputElement.value = "";
                 alert("Viagem no tempo ativada! O relógio foi zerado e o sistema agora busca o GPS.");
                 return;
             }
-
             if(senhaDigitada === "debug") {
                 let pnl = document.getElementById('debug-panel');
                 pnl.style.display = pnl.style.display === "block" ? "none" : "block";
                 inputElement.value = "";
                 return;
             }
-
             if(senhaDigitada === "debug2") {
                 document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
                 document.getElementById('screen-test').style.display = 'block';
@@ -558,11 +569,24 @@
                 return;
             }
 
-            if (senhaDigitada === "teste") {
-                if (faseAtual === 'teste') { alert("Use o botão 'Voltar ao Jogo' abaixo."); return; }
+            // Dicionário de senhas oficiais da operação
+            const senhasOficiais = {
+                0: "p4r4n4p14c4b4",
+                1: "r0ub0",
+                2: "p4d31r0s",
+                3: "m1r4nt3",
+                4: "c3m1t3r10",
+                5: "c4st3l1nh0"
+            };
+
+            // Validação da senha
+            if (faseAtual === 'teste' && senhaDigitada === "teste") {
+                alert("Use o botão 'Voltar ao Jogo' abaixo."); 
+                return;
+            } else if (senhaDigitada === senhasOficiais[faseAtual]) {
                 mudarTela(faseAtual, proximaFase);
             } else {
-                alert("Código inválido.");
+                alert("Acesso Negado: Frequência incorreta.");
             }
         }
 
