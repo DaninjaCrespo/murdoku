@@ -62,6 +62,8 @@
         .btn-gmaps:hover { background-color: #3367d6; }
         .btn-radar { background-color: #cc0000; color: #fff; }
         .btn-radar.ligado { background-color: #4CAF50; }
+        .btn-secundario { background-color: #555; color: #fff; }
+        .btn-secundario:hover { background-color: #777; }
 
         /* Estilo da Área Secreta Discreta */
         .area-secreta { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 30px; opacity: 0.4; transition: opacity 0.3s; }
@@ -97,7 +99,6 @@
 </head>
 <body>
 
-    <!-- PAINEL DE TESTES OCULTO -->
     <div id="debug-panel">
         <b>[MODO DESENVOLVEDOR]</b><br>
         Lat: <span id="dbg-lat">0</span><br>
@@ -106,7 +107,6 @@
         Distância Alvo: <span id="dbg-dist">0</span>m
     </div>
 
-    <!-- TELA SECRETA DE TESTE DE BÚSSOLA -->
     <div id="screen-test" class="screen">
         <h2>🛠️ TESTE DE CALIBRAGEM</h2>
         <select id="alvo-teste" class="dropdown-teste" onchange="mudarAlvoTeste()">
@@ -128,7 +128,6 @@
         <button class="btn-secundario" style="margin-top:20px; width:100%; padding: 15px;" onclick="sairTelaTeste()">Voltar ao Jogo</button>
     </div>
 
-    <!-- TELA 0: ESTACIONAMENTO E TIMER -->
     <div id="screen0" class="screen">
         <h2>OPERAÇÃO PARANAPIACABA - TERCEIRO ATO</h2>
         
@@ -143,7 +142,6 @@
         
         <p>Detetive, uma frequência misteriosa foi interceptada nos antigos trilhos da São Paulo Railway em Paranapiacaba. Os arquivos indicam que um artefato de valor inestimável — o meu coração — foi levado da vila. O relógio acima marca o tempo necessário para que as correntes magnéticas se alinhem. Quando o contador zerar, o radar será ativado. Sua missão começará no instante em que você pisar em solo histórico da parte alta da Vila.</p>
         
-        <!-- Botão modificado para mostrar erro caso tente clicar fora do local -->
         <button id="btn-iniciar" class="btn-principal" onclick="tentarIniciar()">Iniciar Investigação</button>
 
         <div class="area-secreta">
@@ -152,7 +150,6 @@
         </div>
     </div>
 
-    <!-- TELA 1: LARGO DOS PADEIROS -->
     <div id="screen1" class="screen">
         <h2>📂 CASO #1307: O ROUBO DO SÉCULO</h2>
         <p>Atenção, Detetive. O alerta geral foi emitido pelas antigas cornetas da estação. O nevoeiro baixou repentinamente sobre a vila histórica e, sob o manto cinzento, um crime silencioso aconteceu: <b>o meu coração foi roubado</b>.</p>
@@ -176,7 +173,6 @@
         </div>
     </div>
 
-    <!-- TELA 2: MIRANTE DO RELÓGIO (Novo Texto de Instrução Lógica) -->
     <div id="screen2" class="screen">
         <h2>📍 ESTAÇÃO 1: LARGO DOS PADEIROS</h2>
         <p>Você chegou ao coração da parte baixa. O cheiro do antigo carvão e a névoa cobrem as velhas construções de madeira. A equipe de investigação forense isolou o perímetro ao redor do Largo dos Padeiros. Examinando o chão úmido e os relatos das testemunhas locais, os peritos criminais conseguiram traçar os primeiros dados geográficos infalíveis.</p>
@@ -207,7 +203,6 @@
         </div>
     </div>
 
-    <!-- TELA 3: CEMITÉRIO -->
     <div id="screen3" class="screen">
         <h2>🕰️ ESTAÇÃO 2: MIRANTE DO RELÓGIO</h2>
         <p>A neblina se afasta por um instante, revelando a silhueta imponente da Torre do Relógio do outro lado dos trilhos. No final da estradinha, você encontra uma figura misteriosa com ferramentas de precisão nas mãos: é o Relojoeiro da vila. Ajustando os ponteiros do seu relógio de bolso, ele confessa que ouviu passos apressados ecoando na madeira da estação e aceita colaborar.</p>
@@ -240,7 +235,6 @@
         </div>
     </div>
 
-    <!-- TELA 4: MUSEU CASTELINHO -->
     <div id="screen4" class="screen">
         <h2>🪦 ESTAÇÃO 3: CEMITÉRIO DE PARANAPIACABA</h2>
         <p>O silêncio aqui é absoluto. Entre as lápides antigas cobertas pelo musgo e os ornamentos de ferro fundido trazidos pelos ingleses, a temperatura parece cair de repente. A neblina se condensa à sua frente e assume uma forma humana. Não há o que temer, Detetive. É apenas o Fantasma residente da vila, resolvendo sussurrar um segredo.</p>
@@ -271,7 +265,6 @@
         </div>
     </div>
 
-    <!-- TELA 5: CACHOEIRA -->
     <div id="screen5" class="screen">
         <h2>🏰 ESTAÇÃO 4: MUSEU CASTELINHO</h2>
         <p>Você venceu a subida íngreme e se encontra diante do Castelinho. Com suas paredes de madeira avermelhada e estilo tipicamente vitoriano, a antiga residência domina o topo da colina. Ao entrar no escritório principal, o ambiente exala história. Sentado à imponente escrivaninha de carvalho, o espírito do próprio Barão aguarda sua chegada para ditar a última peça do enigma.</p>
@@ -303,7 +296,6 @@
         </div>
     </div>
 
-    <!-- TELA 6: FINAL E CÂMERA -->
     <div id="screen6" class="screen">
         <h2>💖 CASO ENCERRADO: O VERDADEIRO LADRÃO</h2>
         <p>Parabéns, Detetive! O som das águas da cachoeira ecoa entre as árvores e o seu mapa não deixou margem para erros: o cruzamento implacável de todas as pistas e eliminações apontou com precisão cirúrgica para o quadrado <b>E7</b>.</p>
@@ -311,7 +303,6 @@
         <p>O verdadeiro culpado por roubar o seu coração não é nenhum fantasma, relojoeiro ou barão do passado. <b>O ladrão do seu coração está bem à sua frente neste exato segundo</b>.</p>
         <p>Olhe para ele agora mesmo, efetue a prisão e exija imediatamente o resgate do artefato que foi roubado!</p>
         
-        <!-- Módulo de Câmera do Flagrante -->
         <div class="camera-container">
             <h3 style="color: #ff4d4d; margin-top: 0;">📸 REGISTRAR O FLAGRANTE</h3>
             <p style="font-size: 14px;">A perícia exige uma foto oficial com o suspeito. Mantenha este registro guardado: <b>a chave que destranca o resgate físico está escondida na própria evidência.</b></p>
@@ -324,11 +315,12 @@
             <img id="foto-resultado" alt="Sua Foto Oficial">
             
             <p id="msg-salvar">⚠️ Pressione e segure a foto para salvar na galeria ⚠️</p>
+            
+            <button id="btn-refazer-foto" class="btn-secundario" style="display: none; margin-top: 15px;" onclick="refazerFoto()">🔄 Refazer a Prova (Tirar Outra Foto)</button>
         </div>
 
         <p>Que sorte a dele ter sido pego pela detetive mais incrível do mundo.</p>
         
-        <!-- Mensagem de Celebração de 3 Anos -->
         <h2 style="color: #d4af37; font-size: 22px; text-shadow: 0 0 10px rgba(212,175,55,0.5); line-height: 1.5; margin-top: 30px;">
             A nossa história é a minha aventura favorita.<br>
             Um brinde aos nossos 3 anos juntos,<br>
@@ -643,6 +635,7 @@
             const fotoImg = document.getElementById('foto-resultado');
             const btnCapturar = document.getElementById('btn-capturar');
             const msgSalvar = document.getElementById('msg-salvar');
+            const btnRefazer = document.getElementById('btn-refazer-foto');
 
             // Dimensões da borda da Polaroid
             const borda = 20;
@@ -689,6 +682,7 @@
             fotoImg.src = canvas.toDataURL('image/jpeg', 0.95);
             fotoImg.style.display = 'block';
             msgSalvar.style.display = 'block';
+            btnRefazer.style.display = 'block';
 
             // Desliga visor e a câmera
             video.style.display = 'none';
@@ -696,6 +690,17 @@
             if(streamCamera) {
                 streamCamera.getTracks().forEach(track => track.stop());
             }
+        }
+
+        function refazerFoto() {
+            // Oculta a foto atual, a mensagem de salvar e o botão de refazer
+            document.getElementById('foto-resultado').style.display = 'none';
+            document.getElementById('msg-salvar').style.display = 'none';
+            document.getElementById('btn-refazer-foto').style.display = 'none';
+            
+            // Limpa a imagem anterior e reabre a câmera
+            document.getElementById('foto-resultado').src = '';
+            abrirCamera();
         }
     </script>
 </body>
