@@ -99,6 +99,7 @@
 </head>
 <body>
 
+    <!-- PAINEL DE TESTES OCULTO -->
     <div id="debug-panel">
         <b>[MODO DESENVOLVEDOR]</b><br>
         Lat: <span id="dbg-lat">0</span><br>
@@ -107,6 +108,7 @@
         Distância Alvo: <span id="dbg-dist">0</span>m
     </div>
 
+    <!-- TELA SECRETA DE TESTE DE BÚSSOLA -->
     <div id="screen-test" class="screen">
         <h2>🛠️ TESTE DE CALIBRAGEM</h2>
         <select id="alvo-teste" class="dropdown-teste" onchange="mudarAlvoTeste()">
@@ -128,6 +130,7 @@
         <button class="btn-secundario" style="margin-top:20px; width:100%; padding: 15px;" onclick="sairTelaTeste()">Voltar ao Jogo</button>
     </div>
 
+    <!-- TELA 0: ESTACIONAMENTO E TIMER -->
     <div id="screen0" class="screen">
         <h2>OPERAÇÃO PARANAPIACABA - TERCEIRO ATO</h2>
         
@@ -150,6 +153,7 @@
         </div>
     </div>
 
+    <!-- TELA 1: LARGO DOS PADEIROS -->
     <div id="screen1" class="screen">
         <h2>📂 CASO #1307: O ROUBO DO SÉCULO</h2>
         <p>Atenção, Detetive. O alerta geral foi emitido pelas antigas cornetas da estação. O nevoeiro baixou repentinamente sobre a vila histórica e, sob o manto cinzento, um crime silencioso aconteceu: <b>o meu coração foi roubado</b>.</p>
@@ -173,6 +177,7 @@
         </div>
     </div>
 
+    <!-- TELA 2: MIRANTE DO RELÓGIO -->
     <div id="screen2" class="screen">
         <h2>📍 ESTAÇÃO 1: LARGO DOS PADEIROS</h2>
         <p>Você chegou ao coração da parte baixa. O cheiro do antigo carvão e a névoa cobrem as velhas construções de madeira. A equipe de investigação forense isolou o perímetro ao redor do Largo dos Padeiros. Examinando o chão úmido e os relatos das testemunhas locais, os peritos criminais conseguiram traçar os primeiros dados geográficos infalíveis.</p>
@@ -203,6 +208,7 @@
         </div>
     </div>
 
+    <!-- TELA 3: CEMITÉRIO -->
     <div id="screen3" class="screen">
         <h2>🕰️ ESTAÇÃO 2: MIRANTE DO RELÓGIO</h2>
         <p>A neblina se afasta por um instante, revelando a silhueta imponente da Torre do Relógio do outro lado dos trilhos. No final da estradinha, você encontra uma figura misteriosa com ferramentas de precisão nas mãos: é o Relojoeiro da vila. Ajustando os ponteiros do seu relógio de bolso, ele confessa que ouviu passos apressados ecoando na madeira da estação e aceita colaborar.</p>
@@ -235,6 +241,7 @@
         </div>
     </div>
 
+    <!-- TELA 4: MUSEU CASTELINHO -->
     <div id="screen4" class="screen">
         <h2>🪦 ESTAÇÃO 3: CEMITÉRIO DE PARANAPIACABA</h2>
         <p>O silêncio aqui é absoluto. Entre as lápides antigas cobertas pelo musgo e os ornamentos de ferro fundido trazidos pelos ingleses, a temperatura parece cair de repente. A neblina se condensa à sua frente e assume uma forma humana. Não há o que temer, Detetive. É apenas o Fantasma residente da vila, resolvendo sussurrar um segredo.</p>
@@ -265,6 +272,7 @@
         </div>
     </div>
 
+    <!-- TELA 5: CACHOEIRA -->
     <div id="screen5" class="screen">
         <h2>🏰 ESTAÇÃO 4: MUSEU CASTELINHO</h2>
         <p>Você venceu a subida íngreme e se encontra diante do Castelinho. Com suas paredes de madeira avermelhada e estilo tipicamente vitoriano, a antiga residência domina o topo da colina. Ao entrar no escritório principal, o ambiente exala história. Sentado à imponente escrivaninha de carvalho, o espírito do próprio Barão aguarda sua chegada para ditar a última peça do enigma.</p>
@@ -296,6 +304,7 @@
         </div>
     </div>
 
+    <!-- TELA 6: FINAL E CÂMERA -->
     <div id="screen6" class="screen">
         <h2>💖 CASO ENCERRADO: O VERDADEIRO LADRÃO</h2>
         <p>Parabéns, Detetive! O som das águas da cachoeira ecoa entre as árvores e o seu mapa não deixou margem para erros: o cruzamento implacável de todas as pistas e eliminações apontou com precisão cirúrgica para o quadrado <b>E7</b>.</p>
@@ -303,6 +312,7 @@
         <p>O verdadeiro culpado por roubar o seu coração não é nenhum fantasma, relojoeiro ou barão do passado. <b>O ladrão do seu coração está bem à sua frente neste exato segundo</b>.</p>
         <p>Olhe para ele agora mesmo, efetue a prisão e exija imediatamente o resgate do artefato que foi roubado!</p>
         
+        <!-- Módulo de Câmera do Flagrante -->
         <div class="camera-container">
             <h3 style="color: #ff4d4d; margin-top: 0;">📸 REGISTRAR O FLAGRANTE</h3>
             <p style="font-size: 14px;">A perícia exige uma foto oficial com o suspeito. Mantenha este registro guardado: <b>a chave que destranca o resgate físico está escondida na própria evidência.</b></p>
@@ -321,6 +331,7 @@
 
         <p>Que sorte a dele ter sido pego pela detetive mais incrível do mundo.</p>
         
+        <!-- Mensagem de Celebração de 3 Anos -->
         <h2 style="color: #d4af37; font-size: 22px; text-shadow: 0 0 10px rgba(212,175,55,0.5); line-height: 1.5; margin-top: 30px;">
             A nossa história é a minha aventura favorita.<br>
             Um brinde aos nossos 3 anos juntos,<br>
@@ -637,48 +648,57 @@
             const msgSalvar = document.getElementById('msg-salvar');
             const btnRefazer = document.getElementById('btn-refazer-foto');
 
-            // Dimensões da borda da Polaroid
-            const borda = 20;
+            // Dimensões da borda da Polaroid (Agora com mais espaço em cima para o título)
+            const bordaEsqDir = 20;
+            const bordaSuperior = 85; 
             const bordaInferior = 80;
             
             // Ajusta o tamanho da foto final para englobar as bordas
-            canvas.width = video.videoWidth + (borda * 2);
-            canvas.height = video.videoHeight + borda + bordaInferior;
+            canvas.width = video.videoWidth + (bordaEsqDir * 2);
+            canvas.height = video.videoHeight + bordaSuperior + bordaInferior;
 
             // 1. Pinta o fundo de branco envelhecido (Moldura da Polaroid)
             ctx.fillStyle = "#f4f4ec";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 2. Aplica Filtro Vintage (Sépia/Contraste) e desenha o vídeo
+            // 2. Escreve o Título no topo (Centralizado e dividido em duas linhas)
+            ctx.fillStyle = "#2a2a2a"; // Tinta preta estilo carimbo
+            ctx.textAlign = "center";
+            
+            // Linha 1 do Título
+            ctx.font = "bold 22px 'Courier New', monospace";
+            ctx.fillText("PARANAPIACABA, TERCEIRO ATO", canvas.width / 2, 35);
+            
+            // Linha 2 do Título
+            ctx.font = "bold 20px 'Courier New', monospace";
+            ctx.fillText("O ROUBO DO CORAÇÃO", canvas.width / 2, 65);
+
+            // 3. Aplica Filtro Vintage (Sépia/Contraste) e desenha o vídeo
             ctx.filter = 'sepia(0.6) contrast(1.2) brightness(0.9)';
-            ctx.drawImage(video, borda, borda, video.videoWidth, video.videoHeight);
+            ctx.drawImage(video, bordaEsqDir, bordaSuperior, video.videoWidth, video.videoHeight);
             ctx.filter = 'none'; // Desliga o filtro para o restante
 
-            // 3. Efeito de riscos de "foto antiga guardada na gaveta" sobre a imagem
+            // 4. Efeito de riscos de "foto antiga guardada na gaveta" sobre a imagem
             ctx.strokeStyle = "rgba(0,0,0,0.15)";
             ctx.lineWidth = 1;
             for(let i=0; i<15; i++){
                 ctx.beginPath();
-                let x = borda + Math.random() * video.videoWidth;
-                let y = borda + Math.random() * video.videoHeight;
+                let x = bordaEsqDir + Math.random() * video.videoWidth;
+                let y = bordaSuperior + Math.random() * video.videoHeight;
                 ctx.moveTo(x, y);
                 ctx.lineTo(x + (Math.random() * 40 - 20), y + (Math.random() * 100 - 50));
                 ctx.stroke();
             }
 
-            // 4. Inscrições no rodapé da Polaroid
+            // 5. Inscrições no rodapé da Polaroid
             ctx.font = "bold 24px 'Courier New', monospace";
-            ctx.fillStyle = "#2a2a2a"; // Tinta preta estilo carimbo
-            
-            // Texto da Esquerda (A Senha do Cadeado)
             ctx.textAlign = "left";
-            ctx.fillText("ARQUIVO 137: CONFIDENCIAL", borda + 5, canvas.height - 30);
+            ctx.fillText("ARQUIVO 137: CONFIDENCIAL", bordaEsqDir + 5, canvas.height - 30);
 
-            // Texto da Direita (Ano)
             ctx.textAlign = "right";
-            ctx.fillText("2026", canvas.width - borda - 5, canvas.height - 30);
+            ctx.fillText("2026", canvas.width - bordaEsqDir - 5, canvas.height - 30);
 
-            // 5. Converte a arte final gerada em uma imagem .jpg
+            // 6. Converte a arte final gerada em uma imagem .jpg
             fotoImg.src = canvas.toDataURL('image/jpeg', 0.95);
             fotoImg.style.display = 'block';
             msgSalvar.style.display = 'block';
