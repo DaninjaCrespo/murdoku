@@ -12,17 +12,39 @@
             text-align: center;
             margin: 0;
             padding: 20px;
+            overflow-x: hidden;
         }
-        h1, h2 { color: #d4af37; }
+
+        /* --- EFEITO DE NEBLINA ANIMADA --- */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 200%; height: 200%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.035) 0%, transparent 35%),
+                radial-gradient(circle at 80% 60%, rgba(255, 255, 255, 0.04) 0%, transparent 45%),
+                radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.025) 0%, transparent 40%);
+            filter: blur(25px);
+            animation: neblinaDrift 25s ease-in-out infinite alternate;
+            pointer-events: none; /* Deixa clicar através da neblina */
+            z-index: -1;
+        }
+        @keyframes neblinaDrift {
+            0% { transform: translate(-5%, -5%); }
+            100% { transform: translate(2%, 2%); }
+        }
+
+        h1, h2 { color: #d4af37; text-shadow: 0 0 5px rgba(212,175,55,0.3); }
         .screen {
             display: none; 
             max-width: 600px;
             margin: 0 auto;
-            background-color: #2a2a2a;
+            background-color: rgba(42, 42, 42, 0.85); /* Fundo levemente transparente pra ver a neblina */
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
             border: 1px solid #d4af37;
+            position: relative;
         }
         #screen0 { display: block; }
         p { font-size: 16px; line-height: 1.6; text-align: justify; }
@@ -31,28 +53,31 @@
         .cadeado-fechado { color: #ff4d4d; }
         .cadeado-aberto { color: #4CAF50; text-shadow: 0 0 15px #4CAF50 !important; }
 
-        /* --- ESTILO DO RELÓGIO REGRESSIVO --- */
-        #contador-container {
-            background-color: #0d0d0d;
-            padding: 15px;
-            border: 2px solid #ff4d4d;
-            border-radius: 5px;
-            margin: 20px 0;
-            box-shadow: 0 0 15px rgba(255, 77, 77, 0.3);
-        }
+        #contador-container { background-color: rgba(13, 13, 13, 0.9); padding: 15px; border: 2px solid #ff4d4d; border-radius: 5px; margin: 20px 0; box-shadow: 0 0 15px rgba(255, 77, 77, 0.3); }
         #titulo-timer { color: #ff4d4d; font-size: 14px; margin-bottom: 5px; font-weight: bold; text-transform: uppercase; }
         #timer-regressivo { font-family: 'Courier New', Courier, monospace; font-size: 38px; color: #fff; letter-spacing: 3px; font-weight: bold; }
         #legenda-timer { color: #888; font-size: 12px; margin-top: 5px; letter-spacing: 1px;}
         .tempo-liberado { border-color: #4CAF50 !important; box-shadow: 0 0 15px rgba(76, 175, 80, 0.3) !important; }
 
-        .bussola-container { margin: 15px auto; width: 120px; height: 120px; border: 2px dashed #d4af37; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: #111; position: relative; box-shadow: inset 0 0 10px #000; }
+        .bussola-container { margin: 15px auto; width: 120px; height: 120px; border: 2px dashed #d4af37; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: rgba(17, 17, 17, 0.9); position: relative; box-shadow: inset 0 0 10px #000; }
         .seta-bussola { font-size: 50px; transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); transform: rotate(0deg); }
-        .contador-distancia { font-size: 18px; color: #4CAF50; background-color: #111; padding: 10px; border-radius: 5px; border: 1px solid #4CAF50; margin-bottom: 20px; display: inline-block; width: 80%; }
+        .contador-distancia { font-size: 18px; color: #4CAF50; background-color: rgba(17, 17, 17, 0.9); padding: 10px; border-radius: 5px; border: 1px solid #4CAF50; margin-bottom: 20px; display: inline-block; width: 80%; }
         .metros-valor { font-size: 24px; font-weight: bold; }
         
-        .pista-box { background-color: #333; padding: 15px; border-left: 4px solid #d4af37; margin: 20px 0; text-align: left; }
-        .objetivo-box { background-color: #1f1f1f; padding: 15px; border: 1px dashed #d4af37; margin: 20px 0; color: #fff; }
+        .pista-box { background-color: rgba(51, 51, 51, 0.9); padding: 15px; border-left: 4px solid #d4af37; margin: 20px 0; text-align: left; min-height: 100px; }
+        .objetivo-box { background-color: rgba(31, 31, 31, 0.9); padding: 15px; border: 1px dashed #d4af37; margin: 20px 0; color: #fff; }
         
+        /* --- ESTILO DO CURSOR MÁQUINA DE ESCREVER --- */
+        .cursor-maquina {
+            display: inline-block;
+            width: 8px; height: 16px;
+            background-color: #d4af37;
+            vertical-align: text-bottom;
+            margin-left: 3px;
+            animation: piscar 0.8s infinite;
+        }
+        @keyframes piscar { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
         button { border: none; padding: 12px 25px; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.3s; width: 100%; margin-bottom: 10px; }
         .btn-principal { background-color: #d4af37; color: #1a1a1a; }
         .btn-principal:hover { background-color: #b5952f; }
@@ -65,7 +90,6 @@
         .btn-secundario { background-color: #555; color: #fff; }
         .btn-secundario:hover { background-color: #777; }
 
-        /* Estilo da Área Secreta Discreta */
         .area-secreta { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 30px; opacity: 0.4; transition: opacity 0.3s; }
         .area-secreta:hover { opacity: 1; }
         .area-secreta input[type="text"] { width: 120px; padding: 8px; margin: 0; font-size: 14px; border: 1px solid #555; border-radius: 5px; background-color: #111; color: #fff; text-align: center; }
@@ -74,32 +98,17 @@
         #debug-panel { display: none; background: #000; color: #0f0; border: 1px solid #0f0; padding: 10px; font-size: 12px; text-align: left; margin-top: 20px; font-family: monospace;}
         select.dropdown-teste { width: 100%; padding: 10px; margin-bottom: 20px; background: #111; color: #fff; border: 1px solid #d4af37; border-radius: 5px; font-size: 16px;}
         
-        /* Modulo de Câmera na Última Tela */
         .camera-container { margin-top: 20px; background: #111; padding: 15px; border: 1px dashed #d4af37; border-radius: 5px; }
         #video-camera { width: 100%; border: 2px solid #d4af37; border-radius: 5px; display: none; margin-bottom: 10px; }
         #foto-resultado { width: 100%; display: none; box-shadow: 0 4px 15px rgba(0,0,0,0.8); margin-bottom: 10px; border-radius: 2px; }
         .btn-camera { background-color: #ff4d4d; color: #fff; font-size: 18px; padding: 15px; }
         .btn-camera:hover { background-color: #cc0000; }
         
-        /* Instrução de Salvar Chamativa */
-        #msg-salvar { 
-            display: none; 
-            font-size: 16px; 
-            font-weight: bold; 
-            color: #ffd700; 
-            text-transform: uppercase; 
-            background-color: #222; 
-            padding: 15px; 
-            border: 2px dashed #ffd700; 
-            border-radius: 5px; 
-            margin-top: 15px; 
-            letter-spacing: 1px; 
-        }
+        #msg-salvar { display: none; font-size: 16px; font-weight: bold; color: #ffd700; text-transform: uppercase; background-color: #222; padding: 15px; border: 2px dashed #ffd700; border-radius: 5px; margin-top: 15px; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
-    <!-- PAINEL DE TESTES OCULTO -->
     <div id="debug-panel">
         <b>[MODO DESENVOLVEDOR]</b><br>
         Lat: <span id="dbg-lat">0</span><br>
@@ -182,12 +191,15 @@
         <h2>📍 ESTAÇÃO 1: LARGO DOS PADEIROS</h2>
         <p>Você chegou ao coração da parte baixa. O cheiro do antigo carvão e a névoa cobrem as velhas construções de madeira. A equipe de investigação forense isolou o perímetro ao redor do Largo dos Padeiros. Examinando o chão úmido e os relatos das testemunhas locais, os peritos criminais conseguiram traçar os primeiros dados geográficos infalíveis.</p>
         
+        <!-- Pista Dinâmica (Efeito Máquina de Escrever) -->
         <div class="pista-box">
             <strong>📁 RELATÓRIO FORENSE - ARQUIVO #01</strong><br><br>
+            <div id="texto-pista-2">
             🕵️‍♂️ <b>Ponto de Partida:</b> A perícia isolou a área central. Localize o desenho do <b>Coração</b> no seu mapa.<br><br>
             📑 <b>Instruções Lógicas:</b><br>
             <i>1. A partir de onde está o Coração, pegue sua caneta e <b>risque toda a coluna, toda a linha horizontal e as diagonais</b> partindo dele. O ladrão não fugiu por essas rotas.</i><br>
             <i>2. O padrão de pegadas confirma que o suspeito não foi para o norte. Portanto, <b>risque também as Linhas 1, 2 e 3 inteiras</b> do seu tabuleiro físico.</i>
+            </div>
         </div>
 
         <div class="objetivo-box">
@@ -215,12 +227,14 @@
         
         <div class="pista-box">
             <strong>📝 DEPOIMENTO OFICIAL - CASO #1307</strong><br><br>
+            <div id="texto-pista-3">
             🕵️‍♂️ <b>Posição do Relojoeiro:</b> O Relojoeiro jura por sua profissão que permaneceu o tempo todo trabalhando no quadrado <b>A5</b> do mapa.<br><br>
             👁️ <b>Testemunha Ocular:</b> Lá do alto de sua torre, ele garante que a parte baixa do vale estava em completo silêncio. Ele jura que a <b>Linha 9</b> está completamente vazia.<br><br>
             📑 <b>Instruções Lógicas:</b><br>
             <i>1. Fixe o Relojoeiro na coordenada <b>A5</b>.</i><br>
             <i>2. Como ele está ali, use a regra de exclusão e <b>risque inteiramente a Linha A e a Coluna 5</b>. Ninguém mais pode ocupar esses espaços.</i><br>
             <i>3. Passe o risco definitivo também na <b>Linha 9</b>, que está vazia.</i>
+            </div>
         </div>
 
         <div class="objetivo-box">
@@ -248,10 +262,12 @@
         
         <div class="pista-box">
             <strong>👻 REVELAÇÃO ESPIRITUAL - CASO #1307</strong><br><br>
+            <div id="texto-pista-4">
             🕵️‍♂️ <b>Posição do Fantasma:</b> Com uma voz ecoando entre os túmulos, o Fantasma confessa que está condenado a vagar eternamente preso ao quadrado <b>B8</b> do mapa, jurando não ter saído do seu jazigo.<br><br>
             📑 <b>Instruções Lógicas:</b><br>
             <i>1. Fixe o Fantasma na coordenada <b>B8</b> do seu mapa.</i><br>
             <i>2. Pela regra de eliminação, como ele ocupa esse ponto, pegue a caneta e <b>risque inteiramente toda a Linha B e toda a Coluna 8</b> do seu tabuleiro físico.</i>
+            </div>
         </div>
 
         <div class="objetivo-box">
@@ -279,11 +295,13 @@
         
         <div class="pista-box">
             <strong>📜 VEREDITO FINAL DA FERROVIA - CASO #1307</strong><br><br>
+            <div id="texto-pista-5">
             🕵️‍♂️ <b>Posição do Barão:</b> O Barão declara que supervisionou a vila sem sair da sua mesa oficial, localizada exatamente no quadrado <b>D4</b> do mapa.<br><br>
             📑 <b>Instruções Lógicas:</b><br>
             <i>1. Fixe o Barão na coordenada <b>D4</b> da sua tabela.</i><br>
             <i>2. Como o Barão ocupa esta posição, <b>risque e elimine toda a Linha D e toda a Coluna 4</b> por completo.</i><br><br>
             🔍 <b>A Grande Dedução:</b> Detetive, a investigação está concluída! Olhe agora para a sua prancheta física. Se você cruzou todos os depoimentos corretamente — eliminando as linhas vazias e riscando as colunas e linhas bloqueadas por cada personagem que encontrou —, <b>restará apenas um único quadrado em branco em todo o mapa</b>. Esse quadrado vazio é o esconderijo exato do Ladrão!
+            </div>
         </div>
 
         <div class="objetivo-box">
@@ -312,7 +330,6 @@
         <p>O verdadeiro culpado por roubar o seu coração não é nenhum fantasma, relojoeiro ou barão do passado. <b>O ladrão do seu coração está bem à sua frente neste exato segundo</b>.</p>
         <p>Olhe para ele agora mesmo, efetue a prisão e exija imediatamente o resgate do artefato que foi roubado!</p>
         
-        <!-- Módulo de Câmera do Flagrante -->
         <div class="camera-container">
             <h3 style="color: #ff4d4d; margin-top: 0;">📸 REGISTRAR O FLAGRANTE</h3>
             <p style="font-size: 14px;">A perícia exige uma foto oficial com o suspeito. Mantenha este registro guardado: <b>a chave que destranca o resgate físico está escondida na própria evidência.</b></p>
@@ -325,13 +342,11 @@
             <img id="foto-resultado" alt="Sua Foto Oficial">
             
             <p id="msg-salvar">⚠️ Pressione e segure a foto para salvar na galeria ⚠️</p>
-            
             <button id="btn-refazer-foto" class="btn-secundario" style="display: none; margin-top: 15px;" onclick="refazerFoto()">🔄 Refazer a Prova (Tirar Outra Foto)</button>
         </div>
 
         <p>Que sorte a dele ter sido pego pela detetive mais incrível do mundo.</p>
         
-        <!-- Mensagem de Celebração de 3 Anos -->
         <h2 style="color: #d4af37; font-size: 22px; text-shadow: 0 0 10px rgba(212,175,55,0.5); line-height: 1.5; margin-top: 30px;">
             A nossa história é a minha aventura favorita.<br>
             Um brinde aos nossos 3 anos juntos,<br>
@@ -341,10 +356,11 @@
 
     <script>
         // ==========================================
-        // 1. DATA ALVO E COORDENADAS DO JOGO
+        // 1. DATA ALVO, COORDENADAS E STATUS
         // ==========================================
         const DATA_ALVO = new Date(2026, 6, 13, 0, 0, 0).getTime();
         let tempoLiberado = false;
+        let vibrouNestaFase = false; // Controle da vibração por proximidade
 
         const TARGET_ESTACIONAMENTO = { lat: -23.779180, lng: -46.305736, raio: 80 }; 
         const LOCAIS = {
@@ -398,7 +414,7 @@
         }
 
         // ==========================================
-        // 3. RASTREIO E CADEADO GEOGRÁFICO
+        // 3. RASTREIO, CADEADO E VIBRAÇÃO (HAPTIC)
         // ==========================================
         window.onload = function() {
             if (navigator.geolocation) {
@@ -425,6 +441,12 @@
                 let distanciaAtual = Math.round(calcularDistancia(latAtual, lngAtual, targetBussola.lat, targetBussola.lng));
                 document.getElementById('dbg-dist').innerText = distanciaAtual;
                 document.querySelectorAll('.metros-valor').forEach(el => { el.innerText = distanciaAtual; });
+                
+                // VIBRAÇÃO DE PROXIMIDADE DURANTE A CAÇADA
+                if (distanciaAtual <= targetBussola.raio && !vibrouNestaFase && document.getElementById('screen0').style.display === "none") {
+                    if(navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 400]); // Bipe de radar duplo
+                    vibrouNestaFase = true; // Só vibra 1 vez por fase
+                }
             }
         }
 
@@ -440,11 +462,18 @@
                     let status = document.getElementById('status-gps');
                     status.innerText = "🔓 CONEXÃO ESTABELECIDA. O mistério espera por você na vila de névoa.";
                     status.style.color = "#4CAF50";
+                    
+                    // VIBRAÇÃO INICIAL (Chegada no estacionamento)
+                    if(!vibrouNestaFase) {
+                        if(navigator.vibrate) navigator.vibrate([300, 150, 300]); 
+                        vibrouNestaFase = true;
+                    }
                 } else {
                     document.getElementById('icone-cadeado').innerText = "🔒";
                     document.getElementById('icone-cadeado').className = "cadeado-fechado";
                     document.getElementById('status-gps').innerText = "📡 RADAR BUSCANDO SINAL: Dirija-se ao Estacionamento de Paranapiacaba.";
                     document.getElementById('status-gps').style.color = "#ff4d4d";
+                    vibrouNestaFase = false; // Reseta se ela sair do local
                 }
             }
         }
@@ -482,52 +511,115 @@
         }
 
         // ==========================================
-        // 4. BÚSSOLA ABSOLUTA
+        // 4. BÚSSOLA HÍBRIDA (REVISADA)
         // ==========================================
         let bussolaAtiva = false;
-        let rotationsCSS = 0; 
         
         function iniciarBussola() {
             if(bussolaAtiva) return; 
-            if (window.DeviceOrientationEvent) {
-                window.addEventListener('deviceorientationabsolute', animarSetaBussola, true);
-                bussolaAtiva = true;
-                document.querySelectorAll('.btn-radar').forEach(btn => {
-                    btn.classList.add('ligado');
-                    btn.innerText = "Radar Ativo";
-                });
+            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission()
+                    .then(permissionState => {
+                        if (permissionState === 'granted') ativarSensoresBussola();
+                        else alert("Acesso à bússola negado pelo sistema.");
+                    })
+                    .catch(console.error);
+            } else {
+                ativarSensoresBussola();
             }
         }
 
-        function animarSetaBussola(event) {
-            if (latAtual === 0 || event.alpha === null) return; 
-            let direcaoCelular = 360 - event.alpha; 
-            let anguloDestino = calcularBearing(latAtual, lngAtual, targetBussola.lat, targetBussola.lng);
-            let novaRotacao = anguloDestino - direcaoCelular;
+        function ativarSensoresBussola() {
+            window.addEventListener('deviceorientationabsolute', animarSetaBussola, true);
+            window.addEventListener('deviceorientation', animarSetaBussola, true);
+            bussolaAtiva = true;
+            document.querySelectorAll('.btn-radar').forEach(btn => {
+                btn.classList.add('ligado');
+                btn.innerText = "Radar Ativo";
+            });
+        }
 
-            let diferenca = novaRotacao - (rotationsCSS % 360);
-            if (diferenca > 180) diferenca -= 360;
-            if (diferenca < -180) diferenca += 360;
-            rotationsCSS += diferenca;
+        function animarSetaBussola(event) {
+            if (latAtual === 0) return; 
+            let direcaoCelular;
+            if (event.webkitCompassHeading) {
+                direcaoCelular = event.webkitCompassHeading;
+            } else if (event.alpha !== null) {
+                direcaoCelular = 360 - event.alpha; 
+            } else { return; }
+
+            let anguloDestino = calcularBearing(latAtual, lngAtual, targetBussola.lat, targetBussola.lng);
+            let diferencaRotacao = anguloDestino - direcaoCelular;
 
             document.querySelectorAll('.seta-bussola').forEach(seta => { 
-                seta.style.transform = `rotate(${rotationsCSS}deg)`; 
+                seta.style.transform = `rotate(${diferencaRotacao}deg)`; 
             });
         }
 
         // ==========================================
-        // 5. TRANSIÇÕES E FUNÇÕES DE BYPASS DO DESENVOLVEDOR
+        // 5. TRANSIÇÕES, EFEITO MÁQUINA DE ESCREVER E BYPASS
         // ==========================================
         function mudarTela(faseAtual, proximaFase) {
             document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
             document.getElementById("screen" + proximaFase).style.display = "block";
             window.scrollTo(0, 0);
+            
             if (LOCAIS[proximaFase]) { targetBussola = LOCAIS[proximaFase]; }
+            
+            // Reseta a vibração para o novo alvo
+            vibrouNestaFase = false; 
+
+            // Ativa o Efeito Máquina de Escrever se a tela tiver um relatório
+            let divPista = document.getElementById('texto-pista-' + proximaFase);
+            if(divPista) {
+                maquinaDeEscreverHTML(divPista, 15);
+            }
+        }
+
+        function maquinaDeEscreverHTML(el, speed) {
+            // Guarda o texto original de forma segura apenas na primeira vez
+            if (!el.hasAttribute('data-original')) {
+                el.setAttribute('data-original', el.innerHTML);
+            }
+            const originalHTML = el.getAttribute('data-original');
+            el.innerHTML = ''; // Zera o texto visualmente
+            
+            let i = 0;
+            let isTag = false;
+            let tagBuffer = '';
+            let visibleText = '';
+            
+            function type() {
+                if (i < originalHTML.length) {
+                    let char = originalHTML.charAt(i);
+                    if (char === '<') isTag = true;
+                    
+                    if (isTag) {
+                        tagBuffer += char;
+                        if (char === '>') {
+                            isTag = false;
+                            visibleText += tagBuffer;
+                            tagBuffer = '';
+                        }
+                    } else {
+                        visibleText += char;
+                    }
+                    
+                    // Adiciona o cursor dourado ao fim do texto
+                    el.innerHTML = visibleText + (isTag ? '' : '<span class="cursor-maquina"></span>');
+                    i++;
+                    setTimeout(type, isTag ? 0 : speed);
+                } else {
+                    el.innerHTML = visibleText; // Limpa o cursor quando terminar
+                }
+            }
+            type();
         }
 
         function mudarAlvoTeste() {
             let selecao = document.getElementById('alvo-teste').value;
             targetBussola = LOCAIS[selecao];
+            vibrouNestaFase = false;
             if(latAtual !== 0) {
                 let dist = Math.round(calcularDistancia(latAtual, lngAtual, targetBussola.lat, targetBussola.lng));
                 document.querySelectorAll('.metros-valor').forEach(el => el.innerText = dist);
@@ -538,6 +630,7 @@
             document.getElementById('screen-test').style.display = 'none';
             document.getElementById('screen0').style.display = 'block';
             targetBussola = LOCAIS[1]; 
+            vibrouNestaFase = false;
             window.scrollTo(0, 0);
         }
 
@@ -550,7 +643,6 @@
 
             let senhaDigitada = inputElement.value.trim().toLowerCase();
             
-            // Comandos de desenvolvedor
             if(senhaDigitada === "tempo") {
                 liberarRelogio();
                 inputElement.value = "";
@@ -572,7 +664,6 @@
                 return;
             }
 
-            // Dicionário de senhas oficiais da operação
             const senhasOficiais = {
                 0: "p4r4n4p14c4b4",
                 1: "r0ub0",
@@ -582,7 +673,6 @@
                 5: "c4st3l1nh0"
             };
 
-            // Validação da senha
             if (faseAtual === 'teste' && senhaDigitada === "teste") {
                 alert("Use o botão 'Voltar ao Jogo' abaixo."); 
                 return;
@@ -617,7 +707,7 @@
         }
 
         // ==========================================
-        // 7. MÓDULO DE CÂMERA E EFEITO POLAROID CONFIDENCIAL
+        // 7. MÓDULO DE CÂMERA E EFEITO POLAROID
         // ==========================================
         let streamCamera = null;
 
@@ -635,7 +725,7 @@
                     btnCapturar.style.display = 'block';
                 })
                 .catch(function(err) {
-                    alert("Atenção, Detetive: O acesso à câmera foi negado ou não está disponível no seu aparelho.");
+                    alert("Atenção, Detetive: O acesso à câmera foi negado ou não está disponível.");
                 });
         }
 
@@ -648,37 +738,27 @@
             const msgSalvar = document.getElementById('msg-salvar');
             const btnRefazer = document.getElementById('btn-refazer-foto');
 
-            // Dimensões da borda da Polaroid (Agora com mais espaço em cima para o título)
             const bordaEsqDir = 20;
             const bordaSuperior = 85; 
             const bordaInferior = 80;
             
-            // Ajusta o tamanho da foto final para englobar as bordas
             canvas.width = video.videoWidth + (bordaEsqDir * 2);
             canvas.height = video.videoHeight + bordaSuperior + bordaInferior;
 
-            // 1. Pinta o fundo de branco envelhecido (Moldura da Polaroid)
             ctx.fillStyle = "#f4f4ec";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 2. Escreve o Título no topo (Centralizado e dividido em duas linhas)
-            ctx.fillStyle = "#2a2a2a"; // Tinta preta estilo carimbo
+            ctx.fillStyle = "#2a2a2a"; 
             ctx.textAlign = "center";
-            
-            // Linha 1 do Título
             ctx.font = "bold 22px 'Courier New', monospace";
             ctx.fillText("PARANAPIACABA, TERCEIRO ATO", canvas.width / 2, 35);
-            
-            // Linha 2 do Título
             ctx.font = "bold 20px 'Courier New', monospace";
             ctx.fillText("O ROUBO DO CORAÇÃO", canvas.width / 2, 65);
 
-            // 3. Aplica Filtro Vintage (Sépia/Contraste) e desenha o vídeo
             ctx.filter = 'sepia(0.6) contrast(1.2) brightness(0.9)';
             ctx.drawImage(video, bordaEsqDir, bordaSuperior, video.videoWidth, video.videoHeight);
-            ctx.filter = 'none'; // Desliga o filtro para o restante
+            ctx.filter = 'none'; 
 
-            // 4. Efeito de riscos de "foto antiga guardada na gaveta" sobre a imagem
             ctx.strokeStyle = "rgba(0,0,0,0.15)";
             ctx.lineWidth = 1;
             for(let i=0; i<15; i++){
@@ -690,21 +770,17 @@
                 ctx.stroke();
             }
 
-            // 5. Inscrições no rodapé da Polaroid
             ctx.font = "bold 24px 'Courier New', monospace";
             ctx.textAlign = "left";
             ctx.fillText("ARQUIVO 137: CONFIDENCIAL", bordaEsqDir + 5, canvas.height - 30);
-
             ctx.textAlign = "right";
             ctx.fillText("2026", canvas.width - bordaEsqDir - 5, canvas.height - 30);
 
-            // 6. Converte a arte final gerada em uma imagem .jpg
             fotoImg.src = canvas.toDataURL('image/jpeg', 0.95);
             fotoImg.style.display = 'block';
             msgSalvar.style.display = 'block';
             btnRefazer.style.display = 'block';
 
-            // Desliga visor e a câmera
             video.style.display = 'none';
             btnCapturar.style.display = 'none';
             if(streamCamera) {
@@ -713,12 +789,9 @@
         }
 
         function refazerFoto() {
-            // Oculta a foto atual, a mensagem de salvar e o botão de refazer
             document.getElementById('foto-resultado').style.display = 'none';
             document.getElementById('msg-salvar').style.display = 'none';
             document.getElementById('btn-refazer-foto').style.display = 'none';
-            
-            // Limpa a imagem anterior e reabre a câmera
             document.getElementById('foto-resultado').src = '';
             abrirCamera();
         }
