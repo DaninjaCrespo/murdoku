@@ -97,6 +97,20 @@
         .area-teste-dev:hover { opacity: 1; }
         .area-teste-dev input { width: 40%; padding: 8px; margin: 0; font-size: 14px; }
         .area-teste-dev button { width: auto; padding: 8px 15px; font-size: 14px; margin: 0 0 0 5px; background: #444; color: #fff; border: 1px solid #666; }
+
+        /* --- CORREÇÃO DE RESPONSIVIDADE PARA CELULARES --- */
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .container { padding: 15px; }
+            .box-bloqueio, .box-conteudo { padding: 12px; margin: 15px 0; }
+            .enigma-box { padding: 10px; }
+            .grade-sudoku {
+                padding: 10px 5px;
+                font-size: 12px; /* Reduz a fonte no celular para encaixar perfeitamente */
+                letter-spacing: -0.5px; /* Aproxima um pouco os caracteres */
+            }
+            .enigma-valores { font-size: 13px; padding: 8px; }
+        }
     </style>
 </head>
 <body>
@@ -110,7 +124,6 @@
             <p>Nenhum portal válido foi detectado. Escaneie um QR Code presente nas páginas do livro físico.</p>
         </div>
 
-        <!-- TELA DE BLOQUEIO (COM O SUDOKU DENTRO) -->
         <div id="area-bloqueada" class="box-bloqueio" style="display: none;">
             <span id="label-portal" class="badge-portal">Portal Detectado</span>
             <p>Atenção, Detetive. O arquivo que você está tentando acessar está criptografado sob rígido protocolo de segurança.</p>
@@ -133,7 +146,6 @@
             <div id="msg-erro" class="status-erro">⚠️ Chave incorreta. Frequência não autorizada.</div>
         </div>
 
-        <!-- TELA DO CONTEÚDO LIBERADO (A CARTA) -->
         <div id="area-carta" class="box-conteudo">
             <h3 id="titulo-carta" style="text-align: center; font-size: 20px;"></h3>
             <hr style="border: 1px solid #4CAF50; margin-bottom: 20px;">
@@ -276,7 +288,6 @@
                 portalAtual = tipoUrl;
                 document.getElementById('label-portal').innerText = PORTAIS[portalAtual].nome;
                 
-                // INJETA O ENIGMA DAQUELA EMOÇÃO NA TELA
                 let dadosEnigma = PORTAIS[portalAtual].enigma;
                 document.getElementById('enigma-grade').innerText = dadosEnigma.grade;
                 document.getElementById('enigma-coord').innerText = dadosEnigma.coord;
@@ -356,7 +367,6 @@
             window.scrollTo(0, 0);
         }
 
-        // --- FUNÇÕES DE AÇÃO DOS BOTÕES (WHATSAPP E LIGAÇÃO) ---
         function fazerLigacaoDireta() { window.location.href = `tel:${SEU_TELEFONE}`; }
         function enviarAlertaSimples() { let msg = encodeURIComponent(`🥰 Amor! Acabei de abrir o portal "${PORTAIS[portalAtual].nome}" no meu livro e quis te mandar esse oi para dizer que estou muito feliz!`); window.open(`https://wa.me/${SEU_TELEFONE}?text=${msg}`, '_blank'); }
         function solicitarPixMimo() { let msg = encodeURIComponent(`💰 *VALE-PIX ATIVADO!* 💰\n\nAmor, acabei de abrir o portal "${PORTAIS[portalAtual].nome}" no livro! Conforme o combinado no regulamento, o Pix está carimbado e autorizado. Pode transferir quando puder! 🥰`); window.open(`https://wa.me/${SEU_TELEFONE}?text=${msg}`, '_blank'); }
