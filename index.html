@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Operação Paranapiacaba - Terceiro Ato</title>
+    <title>O Caso de Paranapiacaba</title>
     <style>
         body {
             background-color: #1a1a1a;
@@ -117,7 +117,6 @@
         Distância Alvo: <span id="dbg-dist">0</span>m
     </div>
 
-    <!-- TELA SECRETA DE TESTE DE BÚSSOLA -->
     <div id="screen-test" class="screen">
         <h2>🛠️ TESTE DE CALIBRAGEM</h2>
         <select id="alvo-teste" class="dropdown-teste" onchange="mudarAlvoTeste()">
@@ -139,9 +138,8 @@
         <button class="btn-secundario" style="margin-top:20px; width:100%; padding: 15px;" onclick="sairTelaTeste()">Voltar ao Jogo</button>
     </div>
 
-    <!-- TELA 0: ESTACIONAMENTO E TIMER -->
     <div id="screen0" class="screen">
-        <h2>OPERAÇÃO PARANAPIACABA - TERCEIRO ATO</h2>
+        <h2>O CASO DE PARANAPIACABA</h2>
         
         <div id="contador-container">
             <div id="titulo-timer">SINAL BLOQUEADO PELA NÉVOA</div>
@@ -162,7 +160,6 @@
         </div>
     </div>
 
-    <!-- TELA 1: LARGO DOS PADEIROS -->
     <div id="screen1" class="screen">
         <h2>📂 CASO #1307: O ROUBO DO SÉCULO</h2>
         <p>Atenção, Detetive. O alerta geral foi emitido pelas antigas cornetas da estação. O nevoeiro baixou repentinamente sobre a vila histórica e, sob o manto cinzento, um crime silencioso aconteceu: <b>o meu coração foi roubado</b>.</p>
@@ -186,12 +183,10 @@
         </div>
     </div>
 
-    <!-- TELA 2: MIRANTE DO RELÓGIO -->
     <div id="screen2" class="screen">
         <h2>📍 ESTAÇÃO 1: LARGO DOS PADEIROS</h2>
         <p>Você chegou ao coração da parte baixa. O cheiro do antigo carvão e a névoa cobrem as velhas construções de madeira. A equipe de investigação forense isolou o perímetro ao redor do Largo dos Padeiros. Examinando o chão úmido e os relatos das testemunhas locais, os peritos criminais conseguiram traçar os primeiros dados geográficos infalíveis.</p>
         
-        <!-- Pista Dinâmica (Efeito Máquina de Escrever) -->
         <div class="pista-box">
             <strong>📁 RELATÓRIO FORENSE - ARQUIVO #01</strong><br><br>
             <div id="texto-pista-2">
@@ -220,7 +215,6 @@
         </div>
     </div>
 
-    <!-- TELA 3: CEMITÉRIO -->
     <div id="screen3" class="screen">
         <h2>🕰️ ESTAÇÃO 2: MIRANTE DO RELÓGIO</h2>
         <p>A neblina se afasta por um instante, revelando a silhueta imponente da Torre do Relógio do outro lado dos trilhos. No final da estradinha, você encontra uma figura misteriosa com ferramentas de precisão nas mãos: é o Relojoeiro da vila. Ajustando os ponteiros do seu relógio de bolso, ele confessa que ouviu passos apressados ecoando na madeira da estação e aceita colaborar.</p>
@@ -255,7 +249,6 @@
         </div>
     </div>
 
-    <!-- TELA 4: MUSEU CASTELINHO -->
     <div id="screen4" class="screen">
         <h2>🪦 ESTAÇÃO 3: CEMITÉRIO DE PARANAPIACABA</h2>
         <p>O silêncio aqui é absoluto. Entre as lápides antigas cobertas pelo musgo e os ornamentos de ferro fundido trazidos pelos ingleses, a temperatura parece cair de repente. A neblina se condensa à sua frente e assume uma forma humana. Não há o que temer, Detetive. É apenas o Fantasma residente da vila, resolvendo sussurrar um segredo.</p>
@@ -288,7 +281,6 @@
         </div>
     </div>
 
-    <!-- TELA 5: CACHOEIRA -->
     <div id="screen5" class="screen">
         <h2>🏰 ESTAÇÃO 4: MUSEU CASTELINHO</h2>
         <p>Você venceu a subida íngreme e se encontra diante do Castelinho. Com suas paredes de madeira avermelhada e estilo tipicamente vitoriano, a antiga residência domina o topo da colina. Ao entrar no escritório principal, o ambiente exala história. Sentado à imponente escrivaninha de carvalho, o espírito do próprio Barão aguarda sua chegada para ditar a última peça do enigma.</p>
@@ -322,7 +314,6 @@
         </div>
     </div>
 
-    <!-- TELA 6: FINAL E CÂMERA -->
     <div id="screen6" class="screen">
         <h2>💖 CASO ENCERRADO: O VERDADEIRO LADRÃO</h2>
         <p>Parabéns, Detetive! O som das águas da cachoeira ecoa entre as árvores e o seu mapa não deixou margem para erros: o cruzamento implacável de todas as pistas e eliminações apontou com precisão cirúrgica para o quadrado <b>E7</b>.</p>
@@ -348,9 +339,7 @@
         <p>Que sorte a dele ter sido pego pela detetive mais incrível do mundo.</p>
         
         <h2 style="color: #d4af37; font-size: 22px; text-shadow: 0 0 10px rgba(212,175,55,0.5); line-height: 1.5; margin-top: 30px;">
-            A nossa história é a minha aventura favorita.<br>
-            Um brinde aos nossos 3 anos juntos,<br>
-            e a todos os mistérios que ainda vamos desvendar.
+            A nossa história é a minha aventura favorita.
         </h2>
     </div>
 
@@ -751,7 +740,7 @@
             ctx.fillStyle = "#2a2a2a"; 
             ctx.textAlign = "center";
             ctx.font = "bold 22px 'Courier New', monospace";
-            ctx.fillText("PARANAPIACABA, TERCEIRO ATO", canvas.width / 2, 35);
+            ctx.fillText("PARANAPIACABA", canvas.width / 2, 35);
             ctx.font = "bold 20px 'Courier New', monospace";
             ctx.fillText("O ROUBO DO CORAÇÃO", canvas.width / 2, 65);
 
